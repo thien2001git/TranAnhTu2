@@ -19,6 +19,7 @@ const Product = () => {
 
   const onLoad = () => {
     getAllProductsByBrand(0, page, 10, true).then((response) => {
+      console.log(response.data.content)
       setProducts(response.data.content);
       setTotal(response.data.totalPages);
     });
@@ -119,7 +120,7 @@ const Product = () => {
                           <img
                             className="img-fluid"
                             style={{ width: "100px", height: "100px" }}
-                            src={require(`../../static/images/${item.image}`)}
+                            src={require(`../../static/images/${item.icon}`)}
                             alt=""
                           />
                         </th>

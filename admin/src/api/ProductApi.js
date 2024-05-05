@@ -6,7 +6,7 @@ export const getAllProducts = (page, size, active) =>{
 }
 
 export const getAllProductsByBrand = (brand, page, size, active) =>{
-    const url = `/api/site/product/by-brand?brand=${brand}&page=${page}&size=${size}&active=${active}`;
+    const url = `/api/site/product/by-brand?brand=${brand}&page=${page}&active=${active}`;
     return Instance.get(url);
 }
 export const getTotalPage = () =>{

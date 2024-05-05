@@ -17,22 +17,22 @@ import java.util.Optional;
 public interface ProductRepo extends JpaRepository<Product, Long> {
     @Query("SELECT new com.poly.datn.be.domain.dto.ResponseProductDto(p.id, p.name, p.code, p.description, p.view, a.price, i.imageLink, p.brand.name, p.sale.discount, p.isActive) FROM Product p " +
             "inner join Attribute a on p.id = a.product.id " +
-            "inner join Image i on p.id = i.product.id where a.size = :size and i.name = :name and p.isActive = :active")
-    Page<ResponseProductDto> getAllProducts(@Param("size") Integer size,
+            "inner join Image i on p.id = i.product.id where a.color = :color and i.name = :name and p.isActive = :active")
+    Page<ResponseProductDto> getAllProducts(@Param("color") String color,
                                             @Param("name") String name,
                                             @Param("active") Boolean active,
                                             Pageable pageable);
 
     @Query("SELECT new com.poly.datn.be.domain.dto.ResponseProductDto(p.id, p.name, p.code, p.description, p.view, a.price, i.imageLink, p.brand.name, p.sale.discount, p.isActive) FROM Product p " +
             "inner join Attribute a on p.id = a.product.id " +
-            "inner join Image i on p.id = i.product.id where a.size = :size and i.name = :name and p.isActive = true and p.id = :id")
-    ResponseProductDto getProductDetail(@Param("size") Integer size,
+            "inner join Image i on p.id = i.product.id where a.color = :color and i.name = :name and p.isActive = true and p.id = :id")
+    ResponseProductDto getProductDetail(@Param("color") String color,
                                         @Param("name") String name,
                                         @Param("id") Long id);
     @Query("SELECT new com.poly.datn.be.domain.dto.ResponseProductDto(p.id, p.name, p.code, p.description, p.view, a.price, i.imageLink, p.brand.name, p.sale.discount, p.isActive) FROM Product p " +
             "inner join Attribute a on p.id = a.product.id " +
-            "inner join Image i on p.id = i.product.id where a.size = :size and i.name = :name and p.isActive = :active and p.brand.id = :brand and p.id <> :id")
-    Page<ResponseProductDto> relateProduct(@Param("size") Integer size,
+            "inner join Image i on p.id = i.product.id where a.color = :color and i.name = :name and p.isActive = :active and p.brand.id = :brand and p.id <> :id")
+    Page<ResponseProductDto> relateProduct(@Param("color") String color,
                                             @Param("name") String name,
                                             @Param("active") Boolean active,
                                             @Param("brand") Long brand,
@@ -40,8 +40,8 @@ public interface ProductRepo extends JpaRepository<Product, Long> {
                                             Pageable pageable);
     @Query("SELECT new com.poly.datn.be.domain.dto.ResponseProductDto(p.id, p.name, p.code, p.description, p.view, a.price, i.imageLink, p.brand.name, p.sale.discount, p.isActive) FROM Product p inner join ProductCategory c on p.id = c.product.id inner join Brand b on p.brand.id = b.id " +
             "inner join Attribute a on p.id = a.product.id " +
-            "inner join Image i on p.id = i.product.id where a.size = :size and i.name = :name and p.isActive = :active and c.category.id IN :category and p.brand.id in :brand and a.price between :min and :max")
-    Page<ResponseProductDto> filterAllProducts(@Param("size") Integer size,
+            "inner join Image i on p.id = i.product.id where a.color = :color and i.name = :name and p.isActive = :active and c.category.id IN :category and p.brand.id in :brand and a.price between :min and :max")
+    Page<ResponseProductDto> filterAllProducts(@Param("color") String color,
                                                @Param("name") String name,
                                                @Param("active") Boolean active,
                                                @Param("category") List<Long> category,
@@ -52,8 +52,8 @@ public interface ProductRepo extends JpaRepository<Product, Long> {
 
     @Query("SELECT new com.poly.datn.be.domain.dto.ResponseProductDto(p.id, p.name, p.code, p.description, p.view, a.price, i.imageLink, p.brand.name, p.sale.discount, p.isActive) FROM Product p " +
             "inner join Attribute a on p.id = a.product.id " +
-            "inner join Image i on p.id = i.product.id where a.size = :size and i.name = :name and p.brand.id = :brand and p.isActive = :active")
-    Page<ResponseProductDto> getAllProductsByBrand(@Param("size") Integer size,
+            "inner join Image i on p.id = i.product.id where a.color = :color and i.name = :name and p.brand.id = :brand and p.isActive = :active")
+    Page<ResponseProductDto> getAllProductsByBrand(@Param("color") String color,
                                                    @Param("name") String name,
                                                    @Param("active") Boolean active,
                                                    @Param("brand") Long brand,
@@ -61,8 +61,8 @@ public interface ProductRepo extends JpaRepository<Product, Long> {
 
     @Query("SELECT DISTINCT new com.poly.datn.be.domain.dto.RespProductDto(p.id, p.name, p.code, p.description, p.view, a.price, i.imageLink, p.brand.name, p.sale.discount, p.isActive) FROM Product p " +
             "inner join Attribute a on p.id = a.product.id " +
-            "inner join Image i on p.id = i.product.id where a.size = :size and i.name = :name and p.name like :keyword or p.brand.name like :keyword")
-    List<RespProductDto> searchAllByKeyword(@Param("size") Integer size,
+            "inner join Image i on p.id = i.product.id where a.color = :color and i.name = :name and p.name like :keyword or p.brand.name like :keyword")
+    List<RespProductDto> searchAllByKeyword(@Param("color") String color,
                                             @Param("name") String name,
                                             @Param("keyword") String keyword,
                                             Pageable pageable);

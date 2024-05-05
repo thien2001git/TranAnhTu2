@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AttributeRepo extends JpaRepository<Attribute, Long> {
-    Attribute findByProduct_IdAndSize(Long productId, Integer size);
+    Attribute findByProduct_IdAndColor(Long productId, String color);
 
 }

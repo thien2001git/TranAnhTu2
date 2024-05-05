@@ -44,12 +44,12 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public  Page<ResponseProductDto> getProducts(Boolean active, Pageable pageable) {
-        return productRepo.getAllProducts(ProductConst.PRODUCT_AVG_SIZE, ProductConst.PRODUCT_MAIN_IMAGE, active, pageable);
+        return productRepo.getAllProducts(ProductConst.PRODUCT_AVG_COLOR, ProductConst.PRODUCT_MAIN_IMAGE, active, pageable);
     }
 
     @Override
     public Page<ResponseProductDto> getAllProductsByBrand(Boolean active, Long brand, Pageable pageable) {
-        return productRepo.getAllProductsByBrand(ProductConst.PRODUCT_AVG_SIZE, ProductConst.PRODUCT_MAIN_IMAGE, active, brand, pageable);
+        return productRepo.getAllProductsByBrand(ProductConst.PRODUCT_AVG_COLOR, ProductConst.PRODUCT_MAIN_IMAGE, active, brand, pageable);
     }
 
     @Override
@@ -59,7 +59,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<RespProductDto> searchByKeyword(String keyword, Pageable pageable) {
-        return productRepo.searchAllByKeyword(ProductConst.PRODUCT_AVG_SIZE, ProductConst.PRODUCT_MAIN_IMAGE, keyword, pageable);
+        return productRepo.searchAllByKeyword(ProductConst.PRODUCT_AVG_COLOR, ProductConst.PRODUCT_MAIN_IMAGE, keyword, pageable);
     }
 
     @Override
@@ -156,7 +156,7 @@ public class ProductServiceImpl implements ProductService {
         for(ReqAttributeDto r: reqAttributeDtos){
             Attribute attribute = new Attribute();
             attribute.setName(product.getName());
-            attribute.setSize(r.getSize());
+            attribute.setColor(r.getColor());
             attribute.setPrice(r.getPrice());
             attribute.setStock(r.getStock());
             attribute.setCache(AttributeConst.ATTRIBUTE_CACHE_INIT);
@@ -200,16 +200,16 @@ public class ProductServiceImpl implements ProductService {
         }
         ReqAttributeDto[] reqAttributeDtos = reqUpdateProductDto.getAttribute();
         for(ReqAttributeDto r: reqAttributeDtos){
-            Attribute attribute = attributeService.getByProductIdAndSize(reqUpdateProductDto.getId(), r.getSize());
+            Attribute attribute = attributeService.getByProductIdAndColor(reqUpdateProductDto.getId(), r.getColor());
            if(attribute != null){
                attribute.setStock(r.getStock());
-               attribute.setSize(r.getSize());
+               attribute.setColor(r.getColor());
                attribute.setPrice(r.getPrice());
                attributeService.save(attribute);
            }else{
                attribute = new Attribute();
                attribute.setName(product.getName());
-               attribute.setSize(r.getSize());
+               attribute.setColor(r.getColor());
                attribute.setPrice(r.getPrice());
                attribute.setStock(r.getStock());
                attribute.setCache(AttributeConst.ATTRIBUTE_CACHE_INIT);
@@ -224,16 +224,16 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Page<ResponseProductDto> filterAllProducts(List<Long> category, List<Long> brand, Double min, Double max, Pageable pageable) {
-        return productRepo.filterAllProducts(ProductConst.PRODUCT_AVG_SIZE, ProductConst.PRODUCT_MAIN_IMAGE, Boolean.TRUE, category, brand, min, max, pageable);
+        return productRepo.filterAllProducts(ProductConst.PRODUCT_AVG_COLOR, ProductConst.PRODUCT_MAIN_IMAGE, Boolean.TRUE, category, brand, min, max, pageable);
     }
 
     @Override
     public Page<ResponseProductDto> relateProduct(Long id, Long brand, Pageable pageable) {
-        return productRepo.relateProduct(ProductConst.PRODUCT_AVG_SIZE, ProductConst.PRODUCT_MAIN_IMAGE, Boolean.TRUE, brand, id, pageable);
+        return productRepo.relateProduct(ProductConst.PRODUCT_AVG_COLOR, ProductConst.PRODUCT_MAIN_IMAGE, Boolean.TRUE, brand, id, pageable);
     }
 
     @Override
     public ResponseProductDto getProductDetail(Long id) {
-        return productRepo.getProductDetail(ProductConst.PRODUCT_AVG_SIZE, ProductConst.PRODUCT_MAIN_IMAGE, id);
+        return productRepo.getProductDetail(ProductConst.PRODUCT_AVG_COLOR, ProductConst.PRODUCT_MAIN_IMAGE, id);
     }
 }

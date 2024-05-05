@@ -15,7 +15,7 @@ public class ProductConst {
     public static final String API_PRODUCT_TOTAL_PAGE = "/api/site/product/total-page";
 
     /* Product Constant */
-    public static final Integer PRODUCT_AVG_SIZE = 39;
+    public static final String PRODUCT_AVG_COLOR = "#eee";
     public static final String PRODUCT_MAIN_IMAGE = "main";
     public static final String PRODUCT_OTHER_IMAGE = "other";
     public static final String PRODUCT_MSG_ERROR_NOT_EXIST = "Mã sản phẩm không tồn tại!";
