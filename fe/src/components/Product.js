@@ -37,19 +37,23 @@ const categories = [
 
 const brands = [
   {
-    display_name: "PUMA",
+    img: "Laptop Samsung.png",
+    display_name: "Samsung",
     value: "1",
   },
   {
-    display_name: "REEBOK",
+    img: "MacBook.png",
+    display_name: "Mac book",
     value: "2",
   },
   {
-    display_name: "NIKE",
+    img: "Laptop Dell.png",
+    display_name: "Dell",
     value: "3",
   },
   {
-    display_name: "ADIDAS",
+    img: "Laptop HP.png",
+    display_name: "Hp",
     value: "4",
   },
 ];
@@ -256,7 +260,7 @@ export default class Product extends React.Component {
                               : `sidebar__item-inner`
                           }
                         >
-                          <i className={"bx bx-category-alt"}></i>
+                          <i className={"bx"}><img alt={item.img} style={{width: '2em', height:'2em'}} src={require(`../static/images/${item.img}`)}/></i>
                           <span>{item.display_name}</span>
                         </div>
                       </div>
