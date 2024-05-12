@@ -157,6 +157,28 @@ const Register = () => {
                       <div className="col-md-6 mb-4 pb-2">
                         <div className="form-outline">
                           <input
+                            type="text"
+                            id="emailAddress"
+                            className="form-control form-control-lg"
+                            {...register("email", {
+                              required: true,
+                              pattern:
+                                /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                            })}
+                          />
+                          <label className="form-label" htmlFor="emailAddress">
+                            Email
+                          </label>
+                          {errors.email && (
+                            <div className="alert alert-danger" role="alert">
+                              Email không hợp lệ!
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                      <div className="col-md-6 mb-4 pb-2">
+                        <div className="form-outline">
+                          <input
                             type="tel"
                             id="phoneNumber"
                             className="form-control form-control-lg"
@@ -184,7 +206,7 @@ const Register = () => {
                           id=""
                           cols="50"
                           rows="5"
-                          {...register("address", { required: false })}
+                          {...register("address", {required: false})}
                         ></textarea>
                         <label className="form-label select-label">
                           Địa chỉ
