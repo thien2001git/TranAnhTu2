@@ -7,6 +7,7 @@ import com.poly.datn.be.entity.Product;
 import com.poly.datn.be.service.ProductService;
 import com.poly.datn.be.util.ConvertUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -31,7 +32,7 @@ public class ProductApi {
                                                      @RequestParam("active") Optional<Boolean> active) {
         Sort sort = Sort.by(Sort.Direction.DESC, "modifyDate");
         Pageable pageable = PageRequest.of(page.orElse(1) - 1, size.orElse(8), sort);
-        return new ResponseEntity<>(productService.getProducts(active.orElse(true), pageable), HttpStatus.OK);
+        return new ResponseEntity<>(productService.getAll(), HttpStatus.OK);
     }
     @GetMapping(ProductConst.API_PRODUCT_RELATE)
     public ResponseEntity<?> relateProduct(@RequestParam("relate") Long brand, @RequestParam("id") Long id) {
@@ -85,6 +86,13 @@ public class ProductApi {
     public ResponseEntity<?> createProduct(@RequestBody ReqProductDto reqProductDto) {
         return new ResponseEntity<>(productService.create(reqProductDto), HttpStatus.OK);
     }
+
+    @PostMapping(ProductConst.API_PRODUCT_DELETE)
+    public ResponseEntity<?> deleteProduct(@RequestBody Product product) {
+        productService.delete(product);
+        return new ResponseEntity<>("ok", HttpStatus.OK);
+    }
+
     @PostMapping(ProductConst.API_PRODUCT_MODIFY)
     public ResponseEntity<?> modifyProduct(@RequestBody ReqUpdateProductDto reqUpdateProductDto) {
         return new ResponseEntity<>(productService.modify(reqUpdateProductDto), HttpStatus.OK);

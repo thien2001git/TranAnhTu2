@@ -57,7 +57,7 @@ public class ScheduledTasks {
                     notification.setRead(false);
                     notification.setDeliver(false);
                     notification.setType(3);
-                    notification.setContent(String.format("Sản phẩm %s màu %s sắp hết, kiểm tra ngay nào", a.getName(), a.getColor()));
+                    notification.setContent(String.format("Sản phẩm %s size %d sắp hết, kiểm tra ngay nào", a.getName(), a.getSize()));
                     notification.setProduct(p);
                     notificationService.createNotification(notification);
                 }

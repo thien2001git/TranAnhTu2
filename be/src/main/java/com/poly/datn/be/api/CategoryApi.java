@@ -45,14 +45,14 @@ public class CategoryApi {
          return ResponseEntity.ok(categoryService.saveCategory(category));
     }
 
+    @PostMapping(CategoryConst.DELETE)
+    public ResponseEntity<?> deleteCategory(@RequestBody Category category) {
+        return ResponseEntity.ok(categoryService.delete(category));
+    }
+
     @PostMapping(CategoryConst.UPDATE)
     public ResponseEntity<?> updateCategory(@RequestBody Category category){
         return ResponseEntity.ok(categoryService.updateCategory(category));
-    }
-
-    @PostMapping(CategoryConst.DELETE)
-    public ResponseEntity<?> deleteCategory(@RequestBody ReqCategoryDto categoryDto){
-             return ResponseEntity.ok(categoryService.deleteCategory(categoryDto));
     }
 
     @PostMapping(CategoryConst.ADD_PRODUCT_CATEGORY)

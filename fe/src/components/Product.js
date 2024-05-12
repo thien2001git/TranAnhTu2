@@ -4,78 +4,53 @@ import {NavLink} from "react-router-dom";
 import "./sidebar/sidebar.css";
 import {ProductItem} from "./Home";
 
+const categories = [
+  {
+    display_name: "Nam",
+    value: "1",
+  },
+  {
+    display_name: "Nữ",
+    value: "2",
+  },
+  {
+    display_name: "Trẻ em",
+    value: "3",
+  },
+  {
+    display_name: "Đá bóng",
+    value: "4",
+  },
+  {
+    display_name: "Thời trang",
+    value: "5",
+  },
+  {
+    display_name: "Bóng rổ",
+    value: "6",
+  },
+  {
+    display_name: "Chạy bộ",
+    value: "7",
+  },
+];
+
 const brands = [
   {
     display_name: "PUMA",
     value: "1",
-    icon: "bx bx-category-alt",
   },
   {
     display_name: "REEBOK",
     value: "2",
-    icon: "bx bx-category-alt",
   },
   {
     display_name: "NIKE",
     value: "3",
-    icon: "bx bx-category-alt",
   },
   {
     display_name: "ADIDAS",
     value: "4",
-    icon: "bx bx-category-alt",
-  },
-  {
-    display_name: "FILA",
-    value: "5",
-    icon: "bx bx-category-alt",
-  },
-  {
-    display_name: "CONVERSE",
-    value: "6",
-    icon: "bx bx-category-alt",
-  },
-  {
-    display_name: "LI-NING",
-    value: "7",
-    icon: "bx bx-category-alt",
-  },
-];
-const categories = [
-  {
-    display_name: "Giày nam",
-    value: "1",
-    icon: "bx bx-category-alt",
-  },
-  {
-    display_name: "Giày nữ",
-    value: "2",
-    icon: "bx bx-category-alt",
-  },
-  {
-    display_name: "Giày trẻ em",
-    value: "3",
-    icon: "bx bx-category-alt",
-  },
-  {
-    display_name: "Giày đá bóng",
-    value: "4",
-    icon: "bx bx-category-alt",
-  },
-  {
-    display_name: "Giày thời trang",
-    value: "5",
-    icon: "bx bx-category-alt",
-  },
-  {
-    display_name: "Giày bóng rổ",
-    value: "6",
-    icon: "bx bx-category-alt",
-  },
-  {
-    display_name: "Giày chạy bộ",
-    value: "7",
-    icon: "bx bx-category-alt",
   },
 ];
 
@@ -83,274 +58,280 @@ const prices = [
   {
     display_name: "Dưới 1 triệu",
     value: "0",
-    icon: "bx bx-category-alt",
     min: 0,
     max: 1000000,
   },
   {
     display_name: "1.000.000 - 2.000.000",
     value: "1",
-    icon: "bx bx-category-alt",
     min: 1000000,
     max: 2000000,
   },
   {
     display_name: "2.000.000 - 3.000.000",
     value: "2",
-    icon: "bx bx-category-alt",
     min: 2000000,
     max: 3000000,
   },
   {
     display_name: "3.000.000 - 4.000.000",
     value: "3",
-    icon: "bx bx-category-alt",
     min: 3000000,
     max: 4000000,
   },
   {
     display_name: "Trên 4 triệu",
     value: "4",
-    icon: "bx bx-category-alt",
     min: 4000000,
-    max: 10000000,
+    max: 1e10,
   },
 ];
 
 const count = 12;
-const defaultBrand = [1, 2, 3, 4, 5, 6, 7];
-const defaultCategory = [1, 2, 3, 4, 5, 6, 7];
 
-const Product = (props) => {
-  const [isFirst, setIsFirst] = useState(true);
-  const [products, setProducts] = useState([]);
-  const [page, setPage] = useState(1);
-  const [total, setTotal] = useState({});
+export default class Product extends React.Component {
+  _isMounted = false;
+  _products = []
+  _count = 0
 
-  const [category, setCategory] = useState([]);
-  const [brand, setBrand] = useState([]);
-  const [price, setPrice] = useState([]);
-  const [min, setMin] = useState(0);
-  const [max, setMax] = useState(10000000);
-
-  var rows = new Array(total).fill(0).map((zero, index) => (
-    <li
-      className={page === index + 1 ? "page-item active" : "page-item"}
-      key={index}
-    >
-      <button className="page-link" onClick={() => onChangePage(index + 1)}>
-        {index + 1}
-      </button>
-    </li>
-  ));
-
-  const chooseBrandHandler = (value) => {
-    const index = brand.indexOf(value);
-    console.log(value, index)
-    if (index > -1) {
-      setBrand(brand.filter((i) => i !== value));
-    } else {
-      setBrand([value]);
+  constructor(props) {
+    super(props);
+    this.state = {
+      brand: -1,
+      category: -1,
+      price: {min: 0, max: 1e10},
+      page: 1,
+      total: 1,
     }
-    onChangePage(1);
-  };
+  }
 
-  useEffect(() => {
-    if (isFirst) {
-      setIsFirst(false)
-      var zz = -1
-      switch (localStorage.getItem("brand")) {
-        case "addidas":
-          zz = 4
-          break
-        case "nike":
-          zz = 3
-          break
-        case "puma":
-          zz = 1
-          break
-        case "fila":
-          zz = 5
-          break
+  componentDidMount() {
+    this._isMounted = true;
+    const {page} = this.state;
+    getAllProducts(page, count, true).then((response) => {
+      const safe = []
+      const safe_ = new Set();
+      response.data.forEach((it, id) => {
+        try {
+          require(`../static/images/${it.image}`)
+          if (!safe_.has(it.id)) {
+            safe_.add(it.id)
+            safe.push(it)
+          }
+        } catch (ex) {
+          if (localStorage.getItem("isLog") === "true") {
+            console.log("not load ", it.image)
+          }
+        }
+      })
+      if (this._isMounted) {
+        this._products = safe.slice(0, 12)
+        this.setState({
+          allProducts: safe,
+          products: {left: safe.slice(0, 12), right: -1},
+          total: 9
+        })
       }
-      console.log("zz", zz)
-      if(zz !== -1) {
-        setBrand([zz])
-        chooseBrandHandler(zz)
+    });
+  }
+
+  update(myState) {
+    this._count++
+    var {allProducts, products} = this.state
+    var {brand, category, price, page} = myState
+    var safe = []
+    const safe_ = new Set();
+    if (allProducts !== undefined) {
+      for (let i = 0; i < allProducts.length; i++) {
+        const it = allProducts[i]
+        const checkBrand = brand !== -1 && it.brand.toLowerCase() === brand.display_name.toLowerCase();
+        const checkCategory = category !== -1 && it.category.toLowerCase() === category.display_name.toLowerCase();
+        const checkPrice = price !== -1 && price.min <= it.price && it.price <= price.max
+        if (checkBrand || checkCategory || checkPrice) {
+          if (!safe_.has(it.id)) {
+            safe_.add(it.id)
+            safe.push(it)
+          }
+        }
       }
-    }
-    if (category.length === 0 && brand.length === 0 && price.length === 0) {
-      getAllProducts(page, count, true).then((response) => {
-        setProducts(response.data.content);
-        setTotal(response.data.totalPages);
-      });
-    } else {
-      const data = {
+
+      if (safe.length === 0) {
+        safe = allProducts
+      }
+      console.log("safe", safe)
+      console.log("page", page)
+      const page_ = page - 1
+      if (products.left !== -1) {
+        products = {left: -1, right: safe.slice(12 * page_, 12 * page_ + 12)}
+      } else {
+        products = {left: safe.slice(12 * page_, 12 * page_ + 12), right: -1}
+      }
+      this.setState({
+        category: category,
+        price: price,
+        brand: brand,
         page: page,
-        count: count,
-        category: category.length > 0 ? category : defaultCategory,
-        brand: brand.length > 0 ? brand : defaultBrand,
-        min: min,
-        max: max,
-      };
-      filterProducts(data).then((resp) => {
-        setProducts(resp.data.content);
-        setTotal(resp.data.totalPages);
-      });
+        products: products,
+        count: this._count
+      })
     }
-    props.changeHeaderHandler(2);
-  }, [page, category, brand, price]);
+  }
 
-  const onChangePage = (page) => {
-    setPage(page);
-  };
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
 
-  const chooseCategoryHandler = (value) => {
-    const index = category.indexOf(value);
-    if (index > -1) {
-      setCategory(category.filter((i) => i !== value));
-    } else {
-      setCategory([value]);
+  chooseBrandHandler(value) {
+    this.update({
+      category: -1,
+      price: -1,
+      brand: this.state.brand === value ? -1 : value,
+      page: this.state.page
+    })
+  }
+
+  chooseCategoryHandler(value) {
+    this.update({
+      category: this.state.category === value ? -1 : value,
+      price: -1,
+      brand: -1,
+      page: this.state.page
+    })
+  }
+
+  choosePriceHandler(item) {
+    this.update({
+      category: -1,
+      price: this.state.price === item ? -1 : item,
+      brand: -1,
+      page: this.state.page
+    })
+  }
+
+  onChangePage(index) {
+    this.update({
+      category: this.state.category,
+      price: this.state.price,
+      brand: this.state.brand,
+      page: index
+    })
+  }
+
+  render() {
+    var {brand, category, price, products, total, page} = this.state
+
+    if (localStorage.getItem("isLog") === "true") {
+      console.log("products", products)
     }
-    onChangePage(1);
-  };
+    const rows = new Array(total).fill(0).map((zero, index) => (
+      <li
+        className={page === index + 1 ? "page-item active" : "page-item"}
+        key={index}
+      >
+        <button className="page-link" onClick={this.onChangePage.bind(this, index + 1)}>
+          {index + 1}
+        </button>
+      </li>
+    ));
 
-  const choosePriceHandler = (value) => {
-    const index = price.indexOf(value);
-    let temp = [];
-    if (index > -1) {
-      temp = price.filter((i) => i !== value);
-      setPrice(price.filter((i) => i !== value));
-    } else {
-      temp = [...price, value];
-      setPrice([value]);
-    }
-    if (temp.length > 0) {
-      temp.sort();
-      setMin(prices[temp[0]].min);
-      setMax(prices[temp[temp.length - 1]].max);
-    } else {
-      setMin(0);
-      setMax(10000000);
-    }
-    onChangePage(1);
-  };
-
-  return (
-    <div>
-      <div className="mt-5">
-        <div className="row">
-          <div className="col-2.5">
-            <div className="col mini-card">
-              <h4 className="text-danger fw-bolder">Thương hiệu</h4>
-              <ul className="list-group">
-                {brands.map((item, index) => (
-                  <div
-                    className="sidebar__item"
-                    key={index}
-                    onClick={() => chooseBrandHandler(item.value)}
-                  >
-                    <div
-                      className={
-                        brand.includes(item.value)
-                          ? `sidebar__item-inner active`
-                          : `sidebar__item-inner`
-                      }
-                    >
-                      <i className={item.icon}></i>
-                      <span>{item.display_name}</span>
-                    </div>
-                  </div>
-                ))}
-              </ul>
-            </div>
-            <div className="col mini-card">
-              <h4 className="text-danger fw-bolder">Loại sản phẩm</h4>
-              <ul className="list-group">
-                {categories.map((item, index) => (
-                  <div
-                    className="sidebar__item"
-                    key={index}
-                    onClick={() => chooseCategoryHandler(item.value)}
-                  >
-                    <div
-                      className={
-                        category.includes(item.value)
-                          ? `sidebar__item-inner active`
-                          : `sidebar__item-inner`
-                      }
-                    >
-                      <i className={item.icon}></i>
-                      <span>{item.display_name}</span>
-                    </div>
-                  </div>
-                ))}
-              </ul>
-            </div>
-
-            <div className="col mt-3 mini-card">
-              <h4 className="text-danger fw-bolder">Giá</h4>
-              <ul className="list-group">
-                {prices.map((item, index) => (
-                  <div className="sidebar__item" key={index}>
-                    <div
-                      className={
-                        price.includes(item.value)
-                          ? `sidebar__item-inner active`
-                          : `sidebar__item-inner`
-                      }
-                      onClick={() => choosePriceHandler(item.value)}
-                    >
-                      <i className={item.icon}></i>
-                      <span>{item.display_name}</span>
-                    </div>
-                  </div>
-                ))}
-              </ul>
-            </div>
-          </div>
-          <div className="col">
-            <div className="container-fluid padding">
-              <div className="container-fluid padding">
-                <div className="row welcome mini-card">
-                  <h4 className="title text-danger">Sản phẩm nổi bật</h4>
+    return (
+      <>
+        <div>
+          <div className="mt-5">
+            <div className="row">
+              <div className="col-2.5">
+                <div className="col mini-card">
+                  <h4 className="text-danger fw-bolder">Thương hiệu</h4>
+                  <ul className="list-group">
+                    {brands.map((item, index) => (
+                      <div
+                        className="sidebar__item"
+                        key={index}
+                        onClick={this.chooseBrandHandler.bind(this, item)}
+                      >
+                        <div
+                          className={
+                            brand === item
+                              ? `sidebar__item-inner active`
+                              : `sidebar__item-inner`
+                          }
+                        >
+                          <i className={"bx bx-category-alt"}></i>
+                          <span>{item.display_name}</span>
+                        </div>
+                      </div>
+                    ))}
+                  </ul>
+                </div>
+                <div className="col mt-3 mini-card">
+                  <h4 className="text-danger fw-bolder">Giá</h4>
+                  <ul className="list-group">
+                    {prices.map((item, index) => (
+                      <div className="sidebar__item" key={index}>
+                        <div
+                          className={
+                            price === item
+                              ? `sidebar__item-inner active`
+                              : `sidebar__item-inner`
+                          }
+                          onClick={this.choosePriceHandler.bind(this, item)}
+                        >
+                          <i className={"bx bx-category-alt"}></i>
+                          <span>{item.display_name}</span>
+                        </div>
+                      </div>
+                    ))}
+                  </ul>
                 </div>
               </div>
-              <div className="row padding">
-                {products &&
-                  products.map((item, index) => (
-                    <ProductItem item={item} key={index}/>
-                  ))}
+              <div className="col">
+                <div className="container-fluid padding">
+                  <div className="container-fluid padding">
+                    <div className="row welcome mini-card">
+                      <h4 className="title text-danger">Sản phẩm nổi bật</h4>
+                    </div>
+                  </div>
+                  <div className="row padding">
+                    {products && products.left !== -1 &&
+                      products.left.map((item, index) => (
+                        <ProductItem item={item} key={index}/>
+                      ))}
+
+                    {products && products.right !== -1 &&
+                      products.right.map((item, index) => (
+                        <ProductItem item={item} key={index}/>
+                      ))}
+
+                  </div>
+                </div>
               </div>
+            </div>
+
+            <div className="d-flex justify-content-center mt-5">
+              <nav aria-label="Page navigation example">
+                <ul className="pagination offset-5">
+                  <li className={page === 1 ? "page-item disabled" : "page-item"}>
+                    <button className="page-link" onClick={this.onChangePage.bind(this, 1)}>
+                      First
+                    </button>
+                  </li>
+                  {rows}
+                  <li
+                    className={page === total ? "page-item disabled" : "page-item"}
+                  >
+                    <button
+                      className="page-link"
+                      onClick={this.onChangePage.bind(this, total)}
+                    >
+                      Last
+                    </button>
+                  </li>
+                </ul>
+              </nav>
             </div>
           </div>
         </div>
-
-        <div className="d-flex justify-content-center mt-5">
-          <nav aria-label="Page navigation example">
-            <ul className="pagination offset-5">
-              <li className={page === 1 ? "page-item disabled" : "page-item"}>
-                <button className="page-link" onClick={() => onChangePage(1)}>
-                  First
-                </button>
-              </li>
-              {rows}
-              <li
-                className={page === total ? "page-item disabled" : "page-item"}
-              >
-                <button
-                  className="page-link"
-                  onClick={() => onChangePage(total)}
-                >
-                  Last
-                </button>
-              </li>
-            </ul>
-          </nav>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default Product;
+      </>
+    )
+  }
+}

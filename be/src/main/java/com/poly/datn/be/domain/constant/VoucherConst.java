@@ -7,6 +7,7 @@ public class VoucherConst {
     public static final String API_VOUCHER_UPDATE = "/api/admin/voucher/update";
     public static final String API_VOUCHER_REMOVE = "/api/admin/voucher/remove/{id}";
     public static final String API_VOUCHER_GET_ALL = "/api/admin/voucher/gel-all";
+    public static final String API_VOUCHER_USER_GET_ALL = "/api/site/voucher/gel-all";
     public static final String API_VOUCHER_GET_BY_ID = "/api/site/voucher/detail/{id}";
 
     /* Voucher constant */

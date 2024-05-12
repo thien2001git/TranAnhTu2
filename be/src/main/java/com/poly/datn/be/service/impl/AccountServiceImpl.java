@@ -149,9 +149,9 @@ public class AccountServiceImpl implements AccountService {
         if (this.accountRepo.findAccountByUsername(reqRegisterAccountDto.getUsername()) != null) {
             throw new AppException("Username đã tồn tại");
         }
-        if (this.accountDetailService.findAccountDetailByEmail(reqRegisterAccountDto.getEmail()) != null){
-            throw new AppException("Email đã tồn tại");
-        }
+//        if (this.accountDetailService.findAccountDetailByEmail(reqRegisterAccountDto.getEmail()) != null){
+//            throw new AppException("Email đã tồn tại");
+//        }
         Account account = ConvertUtil.ReqCreateAccountDtoToAccount(reqRegisterAccountDto);
         account.setPassword(passwordEncoder.encode(account.getPassword()));
         Role role = roleService.findById(3L);

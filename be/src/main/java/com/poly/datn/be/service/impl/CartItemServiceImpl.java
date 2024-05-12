@@ -126,4 +126,14 @@ public class CartItemServiceImpl implements CartItemService {
             }
         }
     }
+
+    @Override
+    public List<CartItem> findAll() {
+        return cartItemRepo.findAll();
+    }
+
+    @Override
+    public void delete(CartItem cartItem) {
+        cartItemRepo.delete(cartItem);
+    }
 }

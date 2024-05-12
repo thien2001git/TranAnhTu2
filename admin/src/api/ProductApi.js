@@ -28,6 +28,12 @@ export const createProduct = (data) =>{
     const url = `/api/admin/product/create`;
     return Instance.post(url, data);
 }
+
+export const deleteProduct = (data) =>{
+  const url = `/api/admin/product/delete`;
+  return Instance.post(url, data);
+}
+
 export const modifyProduct = (data) =>{
     const url = `/api/admin/product/modify`;
     return Instance.post(url, data);

@@ -379,7 +379,7 @@ const Order = () => {
           <h3>Đơn hàng</h3>
         </div>
         <div className="row">
-          <div className="col-sm-4 mt-2">
+          <div className="col-sm-3 mt-2">
             <select
               className="form-control"
               onChange={(event) => getAllOrderByStatus(event.target.value)}
@@ -393,42 +393,7 @@ const Order = () => {
                 ))}
             </select>
           </div>
-          <div className="col-sm-4 mt-2">
-            <select
-              className="form-control"
-              onChange={(e) => changeYearHandler(e.target.value)}
-              value={year}
-            >
-              <option value="">
-                Chọn năm
-              </option>
-              <option value="2019">2019</option>
-              <option value="2021">2021</option>
-              <option value="2022">2022</option>
-            </select>
-          </div>
-          <div className="col-sm-4 mt-2">
-            <select
-              className="form-control"
-              onChange={(e) =>
-                getAllOrderByOrderStatusAndYearAndMonth(e.target.value)
-              }
-              value={month}
-            >
-              <option value="">
-                Chọn tháng
-              </option>
-              {months &&
-                months.map((item, index) => (
-                  <option key={index} value={item}>
-                    Tháng {item}
-                  </option>
-                ))}
-            </select>
-          </div>
-        </div>
-        <div className="row">
-          <div className="col-sm-4 mt-2">
+          <div className="col-sm-3 mt-2">
             <input
               type="date"
               name=""
@@ -439,7 +404,7 @@ const Order = () => {
             />
           </div>
 
-          <div className="col-sm-4 mt-2">
+          <div className="col-sm-3 mt-2">
             <input
               type="date"
               name=""
@@ -449,23 +414,25 @@ const Order = () => {
               value={to}
             />
           </div>
-          <button
-            className="btn btn-primary mt-2"
-            onClick={() => searchHandler()}
-          >
-            Tìm kiếm
-          </button>
+          <div className="col-sm-3 mt-2">
+            <button
+              className="btn btn-primary mt-2"
+              onClick={() => searchHandler()}
+            >
+              Tìm kiếm
+            </button>
+          </div>
         </div>
         <div className="row"></div>
         <div className="card__body">
-          {orders && (
+        {orders && (
             <div>
               <div className="table-wrapper">
                 <table>
                   <thead>
-                    <tr>
-                      <th scope="col">Mã đơn hàng</th>
-                      <th scope="col">Ngày mua</th>
+                  <tr>
+                    <th scope="col">Mã đơn hàng</th>
+                    <th scope="col">Ngày mua</th>
                       <th scope="col">Thanh toán</th>
                       <th scope="col">Tổng tiền</th>
                       <th scope="col">

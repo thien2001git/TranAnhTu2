@@ -14,6 +14,11 @@ export const createCategory = (data) =>{
     return Instance.post(url, data);
 }
 
+export const deleteCategory = (data) =>{
+  const url = `/api/admin/category/delete`;
+  return Instance.post(url, data);
+}
+
 export const updateCategory = (data) =>{
     const url = `/api/admin/category/update`;
     return Instance.post(url, data);

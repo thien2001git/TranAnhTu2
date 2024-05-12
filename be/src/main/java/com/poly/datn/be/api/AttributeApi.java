@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
-import static com.poly.datn.be.domain.constant.ProductConst.PRODUCT_AVG_COLOR;
-
 @RestController
 @CrossOrigin("*")
 public class AttributeApi {
@@ -22,8 +20,8 @@ public class AttributeApi {
 
     @GetMapping(AttributeConst.API_ATTRIBUTE_GET_BY_PRODUCT_ID)
     public ResponseEntity<?> cacheAttribute(@RequestParam("id") Long id,
-                                            @RequestParam("color") Optional<String> color) {
-        return new ResponseEntity<>(attributeService.getByProductIdAndColor(id, color.orElse(PRODUCT_AVG_COLOR)), HttpStatus.OK);
+                                            @RequestParam("size") Optional<Integer> size) {
+        return new ResponseEntity<>(attributeService.getByProductIdAndSize(id, size.orElse(39)), HttpStatus.OK);
     }
     @GetMapping(AttributeConst.API_ATTRIBUTE_GET_BY_ID)
     public ResponseEntity<?> getAttribute(@RequestParam("id") Long id) {

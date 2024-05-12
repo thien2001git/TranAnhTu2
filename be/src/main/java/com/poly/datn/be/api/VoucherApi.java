@@ -46,6 +46,12 @@ public class VoucherApi {
         Pageable pageable = PageRequest.of(page.orElse(1)-1, size.orElse(9), Sort.Direction.DESC,"createDate");
         return new ResponseEntity<>(voucherService.getToTalPage(pageable),HttpStatus.OK);
     }
+    @GetMapping(VoucherConst.API_VOUCHER_USER_GET_ALL)
+    public ResponseEntity<?> getAllVoucherByUser(@RequestParam("page") Optional<Integer> page,
+                                           @RequestParam("size") Optional<Integer> size){
+        Pageable pageable = PageRequest.of(page.orElse(1)-1, size.orElse(9), Sort.Direction.DESC,"createDate");
+        return new ResponseEntity<>(voucherService.getToTalPage(pageable),HttpStatus.OK);
+    }
     @GetMapping(VoucherConst.API_VOUCHER_GET_BY_ID)
     public ResponseEntity<?> getVoucherById(@PathVariable("id") Long id){
         return new ResponseEntity<>(voucherService.getVOucherById(id),HttpStatus.OK);

@@ -12,6 +12,8 @@ public interface AttributeService {
     List<Attribute> findAll();
     List<Attribute> backAttribute(Long id);
     Attribute save(Attribute attribute);
-    Attribute getByProductIdAndColor(Long productId, String color);
+    Attribute getByProductIdAndSize(Long productId, Integer size);
     Boolean isValidCart(Long id, Integer quantity);
+
+    void delete(Attribute attribute);
 }

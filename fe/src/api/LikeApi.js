@@ -30,6 +30,8 @@ export const checkLike = (user_id, product_id) =>{
         user_id: user_id,
         product_id: product_id,
     };
-    console.log(data)
+    if(localStorage.getItem("isLog") === "true") {
+      console.log(data)
+    }
     return Instance.post(url, data);
 }

@@ -10,7 +10,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class ReqAttributeDto {
-    private String color;
+    private Integer size;
     private Double price;
     private Integer stock;
 }

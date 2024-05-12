@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
-import { getCategory } from "../../api/CategoryApi";
+import { getCategory, deleteCategory } from "../../api/CategoryApi";
 
 const Category = () => {
   const [category, setCategory] = useState();
@@ -37,6 +37,13 @@ const Category = () => {
     });
   };
 
+  const handleDelete = (event, item) => {
+    deleteCategory({id: item.id}).then((res) => {
+      console.log("deleteCategory", res)
+      onLoad()
+    })
+  }
+
   return (
     <div className="card">
       <div className="card__header mb-5">
@@ -57,6 +64,7 @@ const Category = () => {
             <th scope="col">Ngày tạo</th>
             <th scope="col">Trạng thái</th>
             <th scope="col">Cập nhật</th>
+            <th scope="col">Xóa</th>
           </tr>
         </thead>
         <tbody>
@@ -73,6 +81,7 @@ const Category = () => {
                     <i className="fa fa-pencil-square-o" aria-hidden="true"></i>
                   </NavLink>
                 </td>
+                <td><button className={"btn btn-danger"} onClick={(event) => handleDelete(event, item)}>Xóa</button></td>
               </tr>
             ))}
         </tbody>

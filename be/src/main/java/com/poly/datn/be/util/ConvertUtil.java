@@ -46,7 +46,7 @@ public class ConvertUtil {
         respProductDetailDto.setImages(images);
         respProductDetailDto.setAttributes((List<Attribute>) product.getAttributes());
         for(Attribute a: product.getAttributes()){
-            if(a.getColor().equals(ProductConst.PRODUCT_AVG_COLOR)){
+            if(a.getSize().equals(ProductConst.PRODUCT_AVG_SIZE)){
                 respProductDetailDto.setPrice(a.getPrice());
                 break;
             }

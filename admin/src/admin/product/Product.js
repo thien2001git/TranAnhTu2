@@ -1,9 +1,9 @@
-import React, {useState, useEffect} from "react";
-import {Button, Form} from "react-bootstrap";
+import React, { useState, useEffect } from "react";
+import { Button, Form } from "react-bootstrap";
 import Modal from "react-bootstrap/Modal";
-import {getAllProductsByBrand} from "../../api/ProductApi";
-import {NavLink} from "react-router-dom";
-import {getBrands} from "../../api/BrandApi";
+import { getAllProductsByBrand, deleteProduct } from "../../api/ProductApi";
+import { NavLink } from "react-router-dom";
+import { getBrands } from "../../api/BrandApi";
 
 const Product = () => {
   const [products, setProducts] = useState([]);
@@ -19,19 +19,28 @@ const Product = () => {
 
   const onLoad = () => {
     getAllProductsByBrand(0, page, 10, true).then((response) => {
-      console.log(response.data.content)
       setProducts(response.data.content);
       setTotal(response.data.totalPages);
     });
 
     getBrands(1, 20)
-      .then((resp) => setBrand(resp.data.content))
+      .then((resp) => {
+        console.log(resp.data.content)
+        setBrand(resp.data.content)
+      })
       .catch((error) => console.log(error));
   };
 
   const onChangePage = (page) => {
     setPage(page);
   };
+
+  const handleDelete = (event, item) => {
+    deleteProduct({id: item.id}).then((res) => {
+      console.log("deleteProduct", res)
+      onLoad()
+    })
+  }
 
   var rows = new Array(total).fill(0).map((zero, index) => (
     <li
@@ -40,7 +49,7 @@ const Product = () => {
     >
       <button
         className="page-link"
-        style={{borderRadius: 50}}
+        style={{ borderRadius: 50 }}
         onClick={() => onChangePage(index + 1)}
       >
         {index + 1}
@@ -60,9 +69,6 @@ const Product = () => {
         .catch((error) => console.log(error));
     }
   };
-  if(products) {
-    console.log("products", products[0])
-  }
   return (
     <div className="col-12">
       <div className="card">
@@ -70,7 +76,7 @@ const Product = () => {
           <NavLink
             to="/add-product"
             className="btn btn-primary"
-            style={{borderRadius: 50}}
+            style={{ borderRadius: 50 }}
           >
             Thêm sản phẩm
           </NavLink>
@@ -96,48 +102,52 @@ const Product = () => {
             <div className="table-wrapper">
               <table>
                 <thead>
-                <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">Tên sản phẩm</th>
-                  <th scope="col">Mã sản phẩm</th>
-                  <th scope="col">Thương hiệu</th>
-                  <th scope="col">Mô tả</th>
-                  <th scope="col">Trạng thái</th>
-                  <th scope="col">Cập nhật</th>
-                </tr>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Tên sản phẩm</th>
+                    <th scope="col">Mã sản phẩm</th>
+                    <th scope="col">Thương hiệu</th>
+                    <th scope="col">Mô tả</th>
+                    <th scope="col">Trạng thái</th>
+                    <th scope="col">Cập nhật</th>
+                    <th scope="col">Xóa</th>
+                  </tr>
                 </thead>
                 <tbody>
-                {products &&
-                  products.map((item, index) => (
-                    <tr key={index}>
-                      <th scope="row">
-                        <NavLink to={`/product-view/${item.id}`} exact>
-                          #{index + 1}
-                        </NavLink>
-                      </th>
-                      <th>{item.name}</th>
-                      <th>{item.code}</th>
-                      <th>{item.brand}</th>
-                      <th>
-                        {" "}
-                        <img
-                          className="img-fluid"
-                          style={{width: "100px", height: "100px"}}
-                          src={require(`../../static/images/${item.image ? item.image : ""}`)}
-                          alt=""
-                        />
-                      </th>
-                      <th>{item.active ? "Đang bán" : "Dừng bán"}</th>
-                      <th>
-                        <NavLink to={`/product-detail/${item.id}`} exact>
-                          <i
-                            className="fa fa-pencil-square-o"
-                            aria-hidden="true"
-                          ></i>
-                        </NavLink>
-                      </th>
-                    </tr>
-                  ))}
+                  {products &&
+                    products.map((item, index) => (
+                      <tr key={index}>
+                        <th scope="row">
+                          <NavLink to={`/product-view/${item.id}`} exact>
+                            #{index + 1}
+                          </NavLink>
+                        </th>
+                        <th>{item.name}</th>
+                        <th>{item.code}</th>
+                        <th>{item.brand}</th>
+                        <th>
+                          {" "}
+                          <img
+                            className="img-fluid"
+                            style={{ width: "100px", height: "100px" }}
+                            src={require(`../../static/images/${item.image}`)}
+                            alt=""
+                          />
+                        </th>
+                        <th>{item.active ? "Đang bán" : "Dừng bán"}</th>
+                        <th>
+                          <NavLink to={`/product-detail/${item.id}`} exact>
+                            <i
+                              className="fa fa-pencil-square-o"
+                              aria-hidden="true"
+                            ></i>
+                          </NavLink>
+                        </th>
+                        <th>
+                          <button className={"btn btn-danger"} onClick={(event) => handleDelete(event, item)}>Xóa</button>
+                        </th>
+                      </tr>
+                    ))}
                 </tbody>
               </table>
             </div>
@@ -148,7 +158,7 @@ const Product = () => {
             <li className={page === 1 ? "page-item disabled" : "page-item"}>
               <button
                 className="page-link"
-                style={{borderRadius: 50}}
+                style={{ borderRadius: 50 }}
                 onClick={() => onChangePage(1)}
               >
                 {`<<`}
@@ -158,7 +168,7 @@ const Product = () => {
             <li className={page === total ? "page-item disabled" : "page-item"}>
               <button
                 className="page-link"
-                style={{borderRadius: 50}}
+                style={{ borderRadius: 50 }}
                 onClick={() => onChangePage(total)}
               >
                 {`>>`}

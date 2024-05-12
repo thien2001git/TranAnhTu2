@@ -6,7 +6,7 @@ import com.poly.datn.be.domain.constant.ProductConst;
 import com.poly.datn.be.domain.dto.*;
 import com.poly.datn.be.domain.exception.AppException;
 import com.poly.datn.be.entity.*;
-import com.poly.datn.be.repo.ProductRepo;
+import com.poly.datn.be.repo.*;
 import com.poly.datn.be.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -42,14 +43,29 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     CategoryService categoryService;
 
+    @Autowired
+    CartItemService cartItemService;
+
+    @Autowired
+    LikeRepo likeRepo;
+
+    @Autowired
+    OrderDetailRepo orderDetailRepo;
+
+    @Autowired
+    NotificationRepo notificationRepo;
+
+    @Autowired
+    ImageRepo imageRepo;
+
     @Override
-    public  Page<ResponseProductDto> getProducts(Boolean active, Pageable pageable) {
-        return productRepo.getAllProducts(ProductConst.PRODUCT_AVG_COLOR, ProductConst.PRODUCT_MAIN_IMAGE, active, pageable);
+    public Page<ResponseProductDto> getProducts(Boolean active, Pageable pageable) {
+        return productRepo.getAllProducts(ProductConst.PRODUCT_AVG_SIZE, ProductConst.PRODUCT_MAIN_IMAGE, active, pageable);
     }
 
     @Override
     public Page<ResponseProductDto> getAllProductsByBrand(Boolean active, Long brand, Pageable pageable) {
-        return productRepo.getAllProductsByBrand(ProductConst.PRODUCT_AVG_COLOR, ProductConst.PRODUCT_MAIN_IMAGE, active, brand, pageable);
+        return productRepo.getAllProductsByBrand(ProductConst.PRODUCT_AVG_SIZE, ProductConst.PRODUCT_MAIN_IMAGE, active, brand, pageable);
     }
 
     @Override
@@ -59,13 +75,13 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<RespProductDto> searchByKeyword(String keyword, Pageable pageable) {
-        return productRepo.searchAllByKeyword(ProductConst.PRODUCT_AVG_COLOR, ProductConst.PRODUCT_MAIN_IMAGE, keyword, pageable);
+        return productRepo.searchAllByKeyword(ProductConst.PRODUCT_AVG_SIZE, ProductConst.PRODUCT_MAIN_IMAGE, keyword, pageable);
     }
 
     @Override
     public Product getProductById(Long id) {
         Optional<Product> optionalProduct = productRepo.findById(id);
-        if(!optionalProduct.isPresent()){
+        if (!optionalProduct.isPresent()) {
             throw new AppException(ProductConst.PRODUCT_MSG_ERROR_NOT_EXIST);
         }
         return optionalProduct.get();
@@ -105,7 +121,7 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     public Product create(ReqProductDto reqProductDto) {
         Optional<Product> p = productRepo.findProductByCode(reqProductDto.getCode());
-        if(p.isPresent()){
+        if (p.isPresent()) {
             throw new AppException(ProductConst.PRODUCT_MSG_CODE_EXIST);
         }
         /*Find brand and set for product*/
@@ -127,7 +143,7 @@ public class ProductServiceImpl implements ProductService {
         product = productRepo.save(product);
         /*Create product-category from product*/
         Long[] categoryId = reqProductDto.getCategoryId();
-        for(Long l: categoryId){
+        for (Long l : categoryId) {
             Category category = categoryService.findById(l);
             ProductCategory productCategory = new ProductCategory();
             productCategory.setProduct(product);
@@ -136,11 +152,11 @@ public class ProductServiceImpl implements ProductService {
         }
         /*Create image of product*/
         String[] imageUrl = reqProductDto.getImageUrl();
-        for(int i = 0; i < imageUrl.length; i++){
+        for (int i = 0; i < imageUrl.length; i++) {
             Image image = new Image();
-            if(i == 0){
+            if (i == 0) {
                 image.setName(ProductConst.PRODUCT_MAIN_IMAGE);
-            }else{
+            } else {
                 image.setName(ProductConst.PRODUCT_OTHER_IMAGE);
             }
             image.setImageLink(imageUrl[i]);
@@ -153,10 +169,10 @@ public class ProductServiceImpl implements ProductService {
         }
         /*Create attribute of product*/
         ReqAttributeDto[] reqAttributeDtos = reqProductDto.getAttribute();
-        for(ReqAttributeDto r: reqAttributeDtos){
+        for (ReqAttributeDto r : reqAttributeDtos) {
             Attribute attribute = new Attribute();
             attribute.setName(product.getName());
-            attribute.setColor(r.getColor());
+            attribute.setSize(r.getSize());
             attribute.setPrice(r.getPrice());
             attribute.setStock(r.getStock());
             attribute.setCache(AttributeConst.ATTRIBUTE_CACHE_INIT);
@@ -172,7 +188,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product modify(ReqUpdateProductDto reqUpdateProductDto) {
         Optional<Product> optional = productRepo.findById(reqUpdateProductDto.getId());
-        if(!optional.isPresent()){
+        if (!optional.isPresent()) {
             throw new AppException(ProductConst.PRODUCT_MSG_ERROR_NOT_EXIST);
         }
         Product product = optional.get();
@@ -187,11 +203,11 @@ public class ProductServiceImpl implements ProductService {
         product.setSale(sale);
         product.setModifyDate(LocalDate.now());
         List<ProductCategory> productCategories = productCategoryService.findByProduct(reqUpdateProductDto.getId());
-        for(ProductCategory p: productCategories){
+        for (ProductCategory p : productCategories) {
             productCategoryService.removeProductCategory(p);
         }
         Long[] categoryId = reqUpdateProductDto.getCategoryId();
-        for(Long l: categoryId){
+        for (Long l : categoryId) {
             Category category = categoryService.findById(l);
             ProductCategory productCategory = new ProductCategory();
             productCategory.setProduct(product);
@@ -199,41 +215,105 @@ public class ProductServiceImpl implements ProductService {
             productCategoryService.create(productCategory);
         }
         ReqAttributeDto[] reqAttributeDtos = reqUpdateProductDto.getAttribute();
-        for(ReqAttributeDto r: reqAttributeDtos){
-            Attribute attribute = attributeService.getByProductIdAndColor(reqUpdateProductDto.getId(), r.getColor());
-           if(attribute != null){
-               attribute.setStock(r.getStock());
-               attribute.setColor(r.getColor());
-               attribute.setPrice(r.getPrice());
-               attributeService.save(attribute);
-           }else{
-               attribute = new Attribute();
-               attribute.setName(product.getName());
-               attribute.setColor(r.getColor());
-               attribute.setPrice(r.getPrice());
-               attribute.setStock(r.getStock());
-               attribute.setCache(AttributeConst.ATTRIBUTE_CACHE_INIT);
-               attribute.setCreateDate(LocalDate.now());
-               attribute.setModifyDate(LocalDate.now());
-               attribute.setProduct(product);
-               attributeService.save(attribute);
-           }
+        for (ReqAttributeDto r : reqAttributeDtos) {
+            Attribute attribute = attributeService.getByProductIdAndSize(reqUpdateProductDto.getId(), r.getSize());
+            if (attribute != null) {
+                attribute.setStock(r.getStock());
+                attribute.setSize(r.getSize());
+                attribute.setPrice(r.getPrice());
+                attributeService.save(attribute);
+            } else {
+                attribute = new Attribute();
+                attribute.setName(product.getName());
+                attribute.setSize(r.getSize());
+                attribute.setPrice(r.getPrice());
+                attribute.setStock(r.getStock());
+                attribute.setCache(AttributeConst.ATTRIBUTE_CACHE_INIT);
+                attribute.setCreateDate(LocalDate.now());
+                attribute.setModifyDate(LocalDate.now());
+                attribute.setProduct(product);
+                attributeService.save(attribute);
+            }
         }
         return productRepo.save(product);
     }
 
     @Override
     public Page<ResponseProductDto> filterAllProducts(List<Long> category, List<Long> brand, Double min, Double max, Pageable pageable) {
-        return productRepo.filterAllProducts(ProductConst.PRODUCT_AVG_COLOR, ProductConst.PRODUCT_MAIN_IMAGE, Boolean.TRUE, category, brand, min, max, pageable);
+        return productRepo.filterAllProducts(ProductConst.PRODUCT_AVG_SIZE, ProductConst.PRODUCT_MAIN_IMAGE, Boolean.TRUE, category, brand, min, max, pageable);
     }
 
     @Override
     public Page<ResponseProductDto> relateProduct(Long id, Long brand, Pageable pageable) {
-        return productRepo.relateProduct(ProductConst.PRODUCT_AVG_COLOR, ProductConst.PRODUCT_MAIN_IMAGE, Boolean.TRUE, brand, id, pageable);
+        return productRepo.relateProduct(ProductConst.PRODUCT_AVG_SIZE, ProductConst.PRODUCT_MAIN_IMAGE, Boolean.TRUE, brand, id, pageable);
     }
 
     @Override
     public ResponseProductDto getProductDetail(Long id) {
-        return productRepo.getProductDetail(ProductConst.PRODUCT_AVG_COLOR, ProductConst.PRODUCT_MAIN_IMAGE, id);
+        return productRepo.getProductDetail(ProductConst.PRODUCT_AVG_SIZE, ProductConst.PRODUCT_MAIN_IMAGE, id);
+    }
+
+    @Override
+    public List<MyResponseProductDto> getAll() {
+        return productRepo.getAll();
+    }
+
+    @Override
+    public void delete(Product product) {
+        List<ProductCategory> list = productCategoryService.findByProduct(product.getId());
+        List<Attribute> attributeList = attributeService.findAll();
+        List<CartItem> cartItemList = cartItemService.findAll();
+        List<Like> likeList = likeRepo.findAll();
+        List<OrderDetail> orderDetailList = orderDetailRepo.findAll();
+        List<Notification> notificationList = notificationRepo.findAll();
+        List<Image> imageList = imageRepo.findAll();
+
+        try {
+            for (ProductCategory productCategory : list) {
+                productCategoryService.removeProductCategory(productCategory);
+            }
+
+            for (Attribute attribute : attributeList) {
+                if (Objects.equals(attribute.getProduct().getId(), product.getId())) {
+                    for (CartItem cartItem : cartItemList) {
+                        if (Objects.equals(cartItem.getAttribute().getId(), attribute.getId())) {
+                            cartItemService.delete(cartItem);
+                        }
+                    }
+
+                    for (OrderDetail orderDetail : orderDetailList) {
+                        if (Objects.equals(orderDetail.getAttribute().getId(), attribute.getId())) {
+                            orderDetailRepo.delete(orderDetail);
+                        }
+                    }
+
+                    attributeService.delete(attribute);
+                }
+            }
+
+            for (Like like : likeList) {
+                if (Objects.equals(like.getProduct().getId(), product.getId())) {
+                    likeRepo.delete(like);
+                }
+            }
+
+            for (Image image : imageList) {
+                if (Objects.equals(image.getProduct().getId(), product.getId())) {
+                    imageRepo.delete(image);
+                }
+            }
+
+            for (Notification notification : notificationList) {
+                if (Objects.equals(notification.getProduct().getId(), product.getId())) {
+                    notificationRepo.delete(notification);
+                }
+            }
+
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        productRepo.delete(product);
     }
 }

@@ -15,4 +15,6 @@ public interface CartItemService {
     void clearCartItem(Long id);
     Boolean isEnoughStock(Long id, Integer quantity);
     void reloadCartItem(Long id);
+    List<CartItem> findAll();
+    void delete(CartItem cartItem);
 }

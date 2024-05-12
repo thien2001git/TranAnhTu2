@@ -72,8 +72,8 @@ public class AttributeServiceImpl implements AttributeService {
     }
 
     @Override
-    public Attribute getByProductIdAndColor(Long productId, String color) {
-        return attributeRepo.findByProduct_IdAndColor(productId, color);
+    public Attribute getByProductIdAndSize(Long productId, Integer size) {
+        return attributeRepo.findByProduct_IdAndSize(productId, size);
     }
 
     @Override
@@ -83,5 +83,10 @@ public class AttributeServiceImpl implements AttributeService {
             throw new AppException(AttributeConst.ATTRIBUTE_MSG_ERROR_NOT_ENOUGH_STOCK);
         }
         return Boolean.TRUE;
+    }
+
+    @Override
+    public void delete(Attribute attribute) {
+        attributeRepo.delete(attribute);
     }
 }

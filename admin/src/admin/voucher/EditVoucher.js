@@ -102,7 +102,7 @@ const EditVoucher = () => {
                 <input
                   type="date"
                   min="2022-01-01"
-                  max="2023-01-01"
+                  max="9999-01-01"
                   className="form-control"
                   {...register("expireDate", {
                     required: true,

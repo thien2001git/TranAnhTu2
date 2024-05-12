@@ -2,9 +2,9 @@ import axios from 'axios'
 
 export const getAllProvince = () =>{
     return axios.create({
-        baseURL: "https://provinces.open-api.vn",
+        baseURL: "https://vn-public-apis.fpo.vn/provinces/getAll?limit=-1",
         headers:{
             "Content-Type" : "application/json"
         }
-    }).get("/api/?depth=3");
+    }).get("/getAll?limit=-1");
 }

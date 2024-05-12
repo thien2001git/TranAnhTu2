@@ -1,9 +1,6 @@
 package com.poly.datn.be.service;
 
-import com.poly.datn.be.domain.dto.ReqProductDto;
-import com.poly.datn.be.domain.dto.ReqUpdateProductDto;
-import com.poly.datn.be.domain.dto.RespProductDto;
-import com.poly.datn.be.domain.dto.ResponseProductDto;
+import com.poly.datn.be.domain.dto.*;
 import com.poly.datn.be.entity.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,4 +24,7 @@ public interface ProductService {
     Page<ResponseProductDto> filterAllProducts(List<Long> category, List<Long> brand, Double min, Double max, Pageable pageable);
     Page<ResponseProductDto> relateProduct(Long id, Long brand, Pageable pageable);
     ResponseProductDto getProductDetail(Long id);
+    List<MyResponseProductDto> getAll();
+
+    void delete(Product product);
 }

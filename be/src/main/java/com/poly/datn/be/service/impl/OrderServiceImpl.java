@@ -62,6 +62,7 @@ public class OrderServiceImpl implements OrderService {
             voucherService.saveVoucher(voucher);
             order.setVoucher(voucher);
         }
+        System.out.println("xxxx" + order.getAddress());
         order = orderRepo.save(order);
         order.setEncodeUrl(Base64.getUrlEncoder().encodeToString(String.valueOf(order.getId()).getBytes()));
         order = orderRepo.save(order);
@@ -78,9 +79,11 @@ public class OrderServiceImpl implements OrderService {
                 orderDetailService.createOrderDetail(o);
                 if (reqOrderDto.getAccountId() != -1) {
                     CartItem c = cartItemService.findCartItemByAccountIdAndAttributeId(account.getId(), o.getAttribute().getId());
-                    c.setQuantity(CartItemConst.CART_ITEM_QUANTITY_WAITING);
-                    c.setIsActive(CartItemConst.CART_ITEM_INACTIVE);
-                    cartItemService.saveCartItem(c);
+                    if (c != null) {
+                        c.setQuantity(CartItemConst.CART_ITEM_QUANTITY_WAITING);
+                        c.setIsActive(CartItemConst.CART_ITEM_INACTIVE);
+                        cartItemService.saveCartItem(c);
+                    }
                 }
             }
         }
