@@ -1,8 +1,7 @@
 import React from "react";
 import "../static/css/style.css";
-import logo from "../static/images/logo-sneaker1.jpg";
+import logo from "../assets/images/logo-sneaker1.jpg";
 import {NavLink, useHistory} from "react-router-dom";
-import user_image from "../static/images/default.png";
 import Dropdown from "../admin/dropdown/Dropdown";
 import {toast} from "react-toastify";
 

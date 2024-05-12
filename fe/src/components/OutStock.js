@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
-import icon from "../static/images/icon_216992.png";
+import icon from "../assets/images/logo512.png";
 import { reloadCartItem, getCartItemByAccountId } from "../api/CartApi";
 import { toast } from "react-toastify";
 

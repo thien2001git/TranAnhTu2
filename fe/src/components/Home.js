@@ -1,10 +1,10 @@
-import addidas from "../static/images/adidas.jpg";
-import nike from "../static/images/nike.jpg";
-import puma from "../static/images/puma.jpg";
-import fila from "../static/images/fila.jpg";
+import addidas from "../static/images/Laptop Acer.png";
+import nike from "../static/images/Laptop Asus.png";
+import puma from "../static/images/Laptop Dell.png";
+import fila from "../static/images/Laptop HP.png";
 import {NavLink, useHistory} from "react-router-dom";
 import first from "../static/images/slider_1_image.jpg";
-import second from "../static/images/MH_D_2880x1280_2_392519213c.avif";
+import second from "../static/images/slider_2_image.jpg";
 import third from "../static/images/slider_4_image.jpg";
 import fourth from "../static/images/slider_5_image.jpg";
 import React, {useState, useEffect} from "react";
