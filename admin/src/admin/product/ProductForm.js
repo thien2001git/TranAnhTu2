@@ -328,21 +328,16 @@ const ProductForm = () => {
               <div className="card mr-3">
                 <div className="form-row">
                   <div className="form-group col-md-6">
-                    <label>Size</label>
+                    <label>Size màn hình</label>
                     <input
                       type="number"
                       className="form-control"
                       {...register("size1", {
                         required: true,
-                        min: 36,
-                        max: 45,
+                        min: 0,
+                        max: 9999,
                       })}
                     />
-                    {errors.size1 && (
-                      <p className="text-danger mt-2">
-                        Size giày trong khoảng 36-45
-                      </p>
-                    )}
                   </div>
                   <div className="form-group col-md-6">
                     <label>Giá</label>
@@ -389,15 +384,10 @@ const ProductForm = () => {
                       className="form-control"
                       {...register("size2", {
                         required: true,
-                        min: 36,
-                        max: 45,
+                        min: 0,
+                        max: 9999,
                       })}
                     />
-                    {errors.size2 && (
-                      <p className="text-danger mt-2">
-                        Size giày trong khoảng 36-45
-                      </p>
-                    )}
                   </div>
                   <div className="form-group col-md-6">
                     <label>Giá</label>
@@ -444,15 +434,10 @@ const ProductForm = () => {
                       className="form-control"
                       {...register("size3", {
                         required: true,
-                        min: 36,
-                        max: 45,
+                        min: 0,
+                        max: 9999,
                       })}
                     />
-                    {errors.size3 && (
-                      <p className="text-danger mt-2">
-                        Size giày trong khoảng 36-45
-                      </p>
-                    )}
                   </div>
                   <div className="form-group col-md-6">
                     <label>Giá</label>
@@ -499,15 +484,10 @@ const ProductForm = () => {
                       className="form-control"
                       {...register("size4", {
                         required: true,
-                        min: 36,
-                        max: 45,
+                        min: 0,
+                        max: 9999,
                       })}
                     />
-                    {errors.size4 && (
-                      <p className="text-danger mt-2">
-                        Size giày trong khoảng 36-45
-                      </p>
-                    )}
                   </div>
                   <div className="form-group col-md-6">
                     <label>Giá</label>
@@ -554,15 +534,10 @@ const ProductForm = () => {
                       className="form-control"
                       {...register("size5", {
                         required: true,
-                        min: 36,
-                        max: 45,
+                        min: 0,
+                        max: 9999,
                       })}
                     />
-                    {errors.size5 && (
-                      <p className="text-danger mt-2">
-                        Size giày trong khoảng 36-45
-                      </p>
-                    )}
                   </div>
                   <div className="form-group col-md-6">
                     <label>Giá</label>
@@ -609,15 +584,10 @@ const ProductForm = () => {
                       className="form-control"
                       {...register("size6", {
                         required: true,
-                        min: 36,
-                        max: 45,
+                        min: 0,
+                        max: 9999,
                       })}
                     />
-                    {errors.size6 && (
-                      <p className="text-danger mt-2">
-                        Size giày trong khoảng 36-45
-                      </p>
-                    )}
                   </div>
                   <div className="form-group col-md-6">
                     <label>Giá</label>
@@ -664,15 +634,10 @@ const ProductForm = () => {
                       className="form-control"
                       {...register("size7", {
                         required: true,
-                        min: 36,
-                        max: 45,
+                        min: 0,
+                        max: 9999,
                       })}
                     />
-                    {errors.size7 && (
-                      <p className="text-danger mt-2">
-                        Size giày trong khoảng 36-45
-                      </p>
-                    )}
                   </div>
                   <div className="form-group col-md-6">
                     <label>Giá</label>
@@ -719,15 +684,10 @@ const ProductForm = () => {
                       className="form-control"
                       {...register("size8", {
                         required: true,
-                        min: 36,
-                        max: 45,
+                        min: 0,
+                        max: 9999,
                       })}
                     />
-                    {errors.size8 && (
-                      <p className="text-danger mt-2">
-                        Size giày trong khoảng 36-45
-                      </p>
-                    )}
                   </div>
                   <div className="form-group col-md-6">
                     <label>Giá</label>
@@ -774,15 +734,10 @@ const ProductForm = () => {
                       className="form-control"
                       {...register("size9", {
                         required: true,
-                        min: 36,
-                        max: 45,
+                        min: 0,
+                        max: 9999,
                       })}
                     />
-                    {errors.size9 && (
-                      <p className="text-danger mt-2">
-                        Size giày trong khoảng 36-45
-                      </p>
-                    )}
                   </div>
                   <div className="form-group col-md-6">
                     <label>Giá</label>
@@ -829,15 +784,10 @@ const ProductForm = () => {
                       className="form-control"
                       {...register("size10", {
                         required: true,
-                        min: 36,
-                        max: 45,
+                        min: 0,
+                        max: 9999,
                       })}
                     />
-                    {errors.size10 && (
-                      <p className="text-danger mt-2">
-                        Size giày trong khoảng 36-45
-                      </p>
-                    )}
                   </div>
                   <div className="form-group col-md-6">
                     <label>Giá</label>
