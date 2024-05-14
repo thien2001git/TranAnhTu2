@@ -52,7 +52,7 @@ const Footer = () => {
               </div>
               <div className="col-12">
                 <hr className="light-100" />
-                <h5>© SneakerHead </h5>
+                <h5>© Laptop AZ </h5>
               </div>
             </div>
           </div>
