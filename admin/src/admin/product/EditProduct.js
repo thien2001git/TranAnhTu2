@@ -285,8 +285,8 @@ const EditProduct = () => {
                       defaultValue={item.attributes[0] && item.attributes[0].size}
                       {...register("size1", {
                         required: true,
-                        min: 36,
-                        max: 45,
+                        min: 0,
+                        max: 99999,
                       })}
                     />
                   </div>
@@ -338,8 +338,8 @@ const EditProduct = () => {
                       defaultValue={item.attributes[1] && item.attributes[1].size}
                       {...register("size2", {
                         required: true,
-                        min: 36,
-                        max: 45,
+                        min: 0,
+                        max: 99999,
                       })}
                     />
                   </div>
@@ -391,8 +391,8 @@ const EditProduct = () => {
                       defaultValue={item.attributes[2] && item.attributes[2].size}
                       {...register("size3", {
                         required: true,
-                        min: 36,
-                        max: 45,
+                        min: 0,
+                        max: 99999,
                       })}
                     />
                   </div>
@@ -444,8 +444,8 @@ const EditProduct = () => {
                       defaultValue={item.attributes[3] && item.attributes[3].size}
                       {...register("size4", {
                         required: true,
-                        min: 36,
-                        max: 45,
+                        min: 0,
+                        max: 99999,
                       })}
                     />
                   </div>
@@ -497,8 +497,8 @@ const EditProduct = () => {
                       defaultValue={item.attributes[4] && item.attributes[4].size}
                       {...register("size5", {
                         required: true,
-                        min: 36,
-                        max: 45,
+                        min: 0,
+                        max: 99999,
                       })}
                     />
                   </div>
@@ -550,8 +550,8 @@ const EditProduct = () => {
                       defaultValue={item.attributes[5] && item.attributes[5].size}
                       {...register("size6", {
                         required: true,
-                        min: 36,
-                        max: 45,
+                        min: 0,
+                        max: 99999,
                       })}
                     />
                   </div>
@@ -603,8 +603,8 @@ const EditProduct = () => {
                       defaultValue={item.attributes[6] && item.attributes[6].size}
                       {...register("size7", {
                         required: true,
-                        min: 36,
-                        max: 45,
+                        min: 0,
+                        max: 99999,
                       })}
                     />
                   </div>
@@ -656,8 +656,8 @@ const EditProduct = () => {
                       defaultValue={item.attributes[7] && item.attributes[7].size}
                       {...register("size8", {
                         required: true,
-                        min: 36,
-                        max: 45,
+                        min: 0,
+                        max: 99999,
                       })}
                     />
                   </div>
@@ -709,8 +709,8 @@ const EditProduct = () => {
                       defaultValue={item.attributes[8] && item.attributes[8].size}
                       {...register("size9", {
                         required: true,
-                        min: 36,
-                        max: 45,
+                        min: 0,
+                        max: 99999,
                       })}
                     />
                   </div>
@@ -762,8 +762,8 @@ const EditProduct = () => {
                       defaultValue={item.attributes[9] && item.attributes[9].size}
                       {...register("size10", {
                         required: true,
-                        min: 36,
-                        max: 45,
+                        min: 0,
+                        max: 99999,
                       })}
                     />
                   </div>
