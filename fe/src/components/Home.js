@@ -203,8 +203,22 @@ const Home = (props) => {
 
   useEffect(() => {
     getAllProducts(page, 12, active).then((response) => {
-      setProducts(response.data.content);
-      setTotal(response.data.totalPages);
+      const safe = []
+      const safe_ = new Set();
+      response.data.forEach((it, id) => {
+        try {
+          require(`../static/images/${it.image}`)
+          if (!safe_.has(it.id)) {
+            safe_.add(it.id)
+            safe.push(it)
+          }
+        } catch (ex) {
+          if (localStorage.getItem("isLog") === "true") {
+            console.log("not load ", it.image)
+          }
+        }
+      })
+      setProducts(safe.slice(0, 12))
     });
     props.changeHeaderHandler(1);
   }, [page]);
@@ -276,29 +290,6 @@ const Home = (props) => {
         {products && products.map((item, index) => (<ProductItem item={item} key={index}></ProductItem>))}
       </div>
     </div>
-    <nav aria-label="Page navigation">
-      <ul className="pagination offset-5 mt-3">
-        <li className={page === 1 ? "page-item disabled" : "page-item"}>
-          <button
-            className="page-link"
-            style={{borderRadius: 50}}
-            onClick={() => onChangePage(1)}
-          >
-            {`<<`}
-          </button>
-        </li>
-        {rows}
-        <li className={page === total ? "page-item disabled" : "page-item"}>
-          <button
-            className="page-link"
-            style={{borderRadius: 50}}
-            onClick={() => onChangePage(total)}
-          >
-            {`>>`}
-          </button>
-        </li>
-      </ul>
-    </nav>
     {/* <div className="container-fluid padding mt-5">
         <div className="row welcome">
           <div className="text-danger">
