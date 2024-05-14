@@ -289,11 +289,6 @@ const EditProduct = () => {
                         max: 45,
                       })}
                     />
-                    {errors.size1 && (
-                      <p className="text-danger mt-2">
-                        Size giày trong khoảng 36-45
-                      </p>
-                    )}
                   </div>
                   <div className="form-group col-md-6">
                     <label>Giá</label>
@@ -347,11 +342,6 @@ const EditProduct = () => {
                         max: 45,
                       })}
                     />
-                    {errors.size2 && (
-                      <p className="text-danger mt-2">
-                        Size giày trong khoảng 36-45
-                      </p>
-                    )}
                   </div>
                   <div className="form-group col-md-6">
                     <label>Giá</label>
@@ -405,11 +395,6 @@ const EditProduct = () => {
                         max: 45,
                       })}
                     />
-                    {errors.size3 && (
-                      <p className="text-danger mt-2">
-                        Size giày trong khoảng 36-45
-                      </p>
-                    )}
                   </div>
                   <div className="form-group col-md-6">
                     <label>Giá</label>
@@ -463,11 +448,6 @@ const EditProduct = () => {
                         max: 45,
                       })}
                     />
-                    {errors.size4 && (
-                      <p className="text-danger mt-2">
-                        Size giày trong khoảng 36-45
-                      </p>
-                    )}
                   </div>
                   <div className="form-group col-md-6">
                     <label>Giá</label>
@@ -521,11 +501,6 @@ const EditProduct = () => {
                         max: 45,
                       })}
                     />
-                    {errors.size5 && (
-                      <p className="text-danger mt-2">
-                        Size giày trong khoảng 36-45
-                      </p>
-                    )}
                   </div>
                   <div className="form-group col-md-6">
                     <label>Giá</label>
@@ -579,11 +554,6 @@ const EditProduct = () => {
                         max: 45,
                       })}
                     />
-                    {errors.size6 && (
-                      <p className="text-danger mt-2">
-                        Size giày trong khoảng 36-45
-                      </p>
-                    )}
                   </div>
                   <div className="form-group col-md-6">
                     <label>Giá</label>
@@ -637,11 +607,6 @@ const EditProduct = () => {
                         max: 45,
                       })}
                     />
-                    {errors.size7 && (
-                      <p className="text-danger mt-2">
-                        Size giày trong khoảng 36-45
-                      </p>
-                    )}
                   </div>
                   <div className="form-group col-md-6">
                     <label>Giá</label>
@@ -695,11 +660,6 @@ const EditProduct = () => {
                         max: 45,
                       })}
                     />
-                    {errors.size8 && (
-                      <p className="text-danger mt-2">
-                        Size giày trong khoảng 36-45
-                      </p>
-                    )}
                   </div>
                   <div className="form-group col-md-6">
                     <label>Giá</label>
@@ -753,11 +713,6 @@ const EditProduct = () => {
                         max: 45,
                       })}
                     />
-                    {errors.size9 && (
-                      <p className="text-danger mt-2">
-                        Size giày trong khoảng 36-45
-                      </p>
-                    )}
                   </div>
                   <div className="form-group col-md-6">
                     <label>Giá</label>
@@ -811,11 +766,6 @@ const EditProduct = () => {
                         max: 45,
                       })}
                     />
-                    {errors.size10 && (
-                      <p className="text-danger mt-2">
-                        Size giày trong khoảng 36-45
-                      </p>
-                    )}
                   </div>
                   <div className="form-group col-md-6">
                     <label>Giá</label>
