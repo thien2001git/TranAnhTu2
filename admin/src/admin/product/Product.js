@@ -10,6 +10,8 @@ const Product = () => {
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState({});
   const [show, setShow] = useState(false);
+  const [showFirst, setShowFirst] = useState(false);
+  const [currentDelete, setCurrentDelete] = useState();
   const handleClose = () => setShow(false);
   const [brand, setBrand] = useState([]);
 
@@ -36,7 +38,18 @@ const Product = () => {
   };
 
   const handleDelete = (event, item) => {
-    deleteProduct({id: item.id}).then((res) => {
+    setShowFirst(true)
+    setCurrentDelete(item)
+
+  }
+
+  const handleCloseFirst = () => {
+    setShowFirst(false)
+  }
+
+  const onSubmitHandler = () => {
+    setShowFirst(false)
+    deleteProduct({id: currentDelete.id}).then((res) => {
       console.log("deleteProduct", res)
       onLoad()
     })
@@ -177,6 +190,28 @@ const Product = () => {
           </ul>
         </nav>
       </div>
+
+      <Modal show={showFirst} onHide={handleCloseFirst}>
+        <Modal.Header closeButton>
+          <Modal.Title style={{ textAlign: "center" }}>
+            Bạn đã chắc chắn chưa?
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            variant="danger"
+            onClick={() => onSubmitHandler()}
+          >
+            Xác nhận
+          </Button>
+          <Button variant="primary" onClick={handleCloseFirst}>
+            Đóng
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Xác nhận cập nhật?</Modal.Title>
