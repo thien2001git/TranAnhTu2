@@ -20,6 +20,7 @@ public class RespProductDetailDto {
     private String main;
     private Integer discount;
     private List<String> images;
+    private String colors;
     private List<Attribute> attributes;
     private List<Long> category;
     private Long saleId;

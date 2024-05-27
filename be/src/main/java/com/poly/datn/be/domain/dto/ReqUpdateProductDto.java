@@ -14,6 +14,7 @@ public class ReqUpdateProductDto {
     private String name;
     private String code;
     private String description;
+    private String colors;
     private Long brandId;
     private Long saleId;
     private Long[] categoryId;

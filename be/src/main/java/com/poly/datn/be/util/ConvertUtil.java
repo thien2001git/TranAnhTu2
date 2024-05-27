@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 public class ConvertUtil {
 
     //mapper product -> resp-product-dto
-    public static RespProductDto fromProduct(Object[] objects){
+    public static RespProductDto fromProduct(Object[] objects) {
         RespProductDto respProductDto = new RespProductDto();
         respProductDto.setId((Long) objects[0]);
         respProductDto.setName((String) objects[1]);
@@ -34,7 +34,7 @@ public class ConvertUtil {
         return respProductDto;
     }
 
-    public static RespProductDetailDto fromProductDetail(Product product){
+    public static RespProductDetailDto fromProductDetail(Product product) {
         RespProductDetailDto respProductDetailDto = new RespProductDetailDto();
         respProductDetailDto.setId(product.getId());
         respProductDetailDto.setName(product.getName());
@@ -44,9 +44,13 @@ public class ConvertUtil {
         respProductDetailDto.setMain(main);
         List<String> images = product.getImages().stream().map(item -> item.getImageLink()).collect(Collectors.toList());
         respProductDetailDto.setImages(images);
+        respProductDetailDto.setColors(product.getColors());
+        if (product.getColors().isEmpty()) {
+            respProductDetailDto.setColors("black white gray");
+        }
         respProductDetailDto.setAttributes((List<Attribute>) product.getAttributes());
-        for(Attribute a: product.getAttributes()){
-            if(a.getSize().equals(ProductConst.PRODUCT_AVG_SIZE)){
+        for (Attribute a : product.getAttributes()) {
+            if (a.getSize().equals(ProductConst.PRODUCT_AVG_SIZE)) {
                 respProductDetailDto.setPrice(a.getPrice());
                 break;
             }
@@ -61,7 +65,7 @@ public class ConvertUtil {
         return respProductDetailDto;
     }
 
-    public static RespCartItemDto fromCartItem(Object[] objects){
+    public static RespCartItemDto fromCartItem(Object[] objects) {
         RespCartItemDto respCartItemDto = new RespCartItemDto();
         respCartItemDto.setId((Long) objects[0]);
         respCartItemDto.setImage((String) objects[1]);
@@ -75,7 +79,7 @@ public class ConvertUtil {
         return respCartItemDto;
     }
 
-    public static Order fromReqOrderDto(ReqOrderDto reqOrderDto){
+    public static Order fromReqOrderDto(ReqOrderDto reqOrderDto) {
         Order order = new Order();
         order.setFullname(reqOrderDto.getFullname());
         order.setAddress(reqOrderDto.getAddress());
@@ -91,7 +95,7 @@ public class ConvertUtil {
         return order;
     }
 
-    public static RespAccountDto accountToRespAccountDto(Object[] objects){
+    public static RespAccountDto accountToRespAccountDto(Object[] objects) {
         RespAccountDto respAccountDto = new RespAccountDto();
         respAccountDto.setId((Long) objects[0]);
         respAccountDto.setUsername((String) objects[1]);
@@ -105,10 +109,10 @@ public class ConvertUtil {
         respAccountDto.setEmail((String) objects[9]);
         respAccountDto.setAddress((String) objects[10]);
         respAccountDto.setBirthDate((LocalDate) objects[11]);
-        return  respAccountDto;
+        return respAccountDto;
     }
 
-    public static RespAccountDto accountToRespAccountDto(Account account, AccountDetail accountDetail){
+    public static RespAccountDto accountToRespAccountDto(Account account, AccountDetail accountDetail) {
         RespAccountDto respAccountDto = new RespAccountDto();
         respAccountDto.setId(account.getId());
         respAccountDto.setUsername(account.getUsername());
@@ -122,10 +126,10 @@ public class ConvertUtil {
         respAccountDto.setEmail(accountDetail.getEmail());
         respAccountDto.setAddress(accountDetail.getAddress());
         respAccountDto.setBirthDate(LocalDate.now());
-        return  respAccountDto;
+        return respAccountDto;
     }
 
-    public static Account ReqCreateAccountDtoToAccount(ReqCreateAccountDto reqAccountDto){
+    public static Account ReqCreateAccountDtoToAccount(ReqCreateAccountDto reqAccountDto) {
 //        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         Account account = new Account();
         account.setUsername(reqAccountDto.getUsername());
@@ -140,7 +144,7 @@ public class ConvertUtil {
         return account;
     }
 
-    public static Account ReqCreateAccountDtoToAccount(ReqRegisterAccountDto reqAccountDto){
+    public static Account ReqCreateAccountDtoToAccount(ReqRegisterAccountDto reqAccountDto) {
         Account account = new Account();
         account.setUsername(reqAccountDto.getUsername());
         account.setPassword(reqAccountDto.getPassword());
@@ -150,7 +154,7 @@ public class ConvertUtil {
         return account;
     }
 
-    public static Account ReqUpdateAccountDtoToAccount(Account account, ReqUpdateAccountDto reqUpdateAccountDto){
+    public static Account ReqUpdateAccountDtoToAccount(Account account, ReqUpdateAccountDto reqUpdateAccountDto) {
         account.setId(reqUpdateAccountDto.getId());
         account.setIsActive(reqUpdateAccountDto.getIsActive());
         account.setModifyDate(LocalDate.now());
@@ -160,7 +164,7 @@ public class ConvertUtil {
         return account;
     }
 
-    public static AccountDetail ReqAccountDtoToAccountDetail(ReqCreateAccountDto reqCreateAccountDto){
+    public static AccountDetail ReqAccountDtoToAccountDetail(ReqCreateAccountDto reqCreateAccountDto) {
         AccountDetail accountDetail = new AccountDetail();
         Account account = new Account();
         accountDetail.setAccount(account);
@@ -173,7 +177,7 @@ public class ConvertUtil {
         return accountDetail;
     }
 
-    public static AccountDetail ReqAccountDtoToAccountDetail(ReqRegisterAccountDto ReqRegisterAccountDto){
+    public static AccountDetail ReqAccountDtoToAccountDetail(ReqRegisterAccountDto ReqRegisterAccountDto) {
         AccountDetail accountDetail = new AccountDetail();
         accountDetail.setFullname(ReqRegisterAccountDto.getFullName());
         accountDetail.setGender(ReqRegisterAccountDto.getGender());
@@ -184,7 +188,7 @@ public class ConvertUtil {
         return accountDetail;
     }
 
-    public static AccountDetail ReqAccountDtoToAccountDetail(ReqUpdateAccountDto ReqUpdateAccountDto){
+    public static AccountDetail ReqAccountDtoToAccountDetail(ReqUpdateAccountDto ReqUpdateAccountDto) {
         AccountDetail accountDetail = new AccountDetail();
         Account account = new Account();
         account.setId(ReqUpdateAccountDto.getId());

@@ -12,6 +12,7 @@ const EditProduct = () => {
   const [brand, setBrand] = useState([]);
   const [sale, setSale] = useState([]);
   const [cate, setCate] = useState([]);
+  const [colors, setColors] = useState("");
   const [item, setItem] = useState();
   const [attributes, setAttributes] = useState([]);
   const [flag, setFlag] = useState([]);
@@ -34,6 +35,10 @@ const EditProduct = () => {
     setCount(value);
   };
 
+  const changeColorHandler = (value) => {
+    setColors(value);
+  };
+
   const onLoad = () => {
     getBrands(1, 20)
       .then((resp) => setBrand(resp.data.content))
@@ -49,6 +54,7 @@ const EditProduct = () => {
         setFlag(res.data.category);
         setAttributes(res.data.attributes);
         setCount(res.data.attributes.length);
+        setColors(res.data.colors)
         getCategory(1, 20)
           .then((resp) => setCate(resp.data.content))
           .catch((error) => console.log(error));
@@ -80,6 +86,7 @@ const EditProduct = () => {
         name: data.name,
         code: data.code,
         description: data.description,
+        colors: colors,
         brandId: data.brandId,
         saleId: data.saleId,
         categoryId: data.category,
@@ -258,21 +265,35 @@ const EditProduct = () => {
           <div className="col-10 row">
             <div className="card mr-5 col-10">
               <h4 className="d-flex justify-content-between align-items-center mb-1">
-                <span className="text-dark">Chi tiết sản phẩm</span> <br />
+                <span className="text-dark">Chi tiết sản phẩm</span> <br/>
               </h4>
               <span className="text-dark">Số lượng</span>{" "}
               <select
-                class="form-control mb-2"
+                className="form-control mb-2"
                 onChange={(e) => changeCountHandler(e.target.value)}
                 value={count}
               >
                 {numbers.map((item, index) => (
-                  <option value={item} key={index} disabled={item < attributes.length} hidden={item < attributes.length}>
+                  <option value={item} key={index} disabled={item < attributes.length}
+                          hidden={item < attributes.length}>
                     {index + 1}
                   </option>
                 ))}
               </select>
-              <br />
+              <br/>
+            </div>
+            <div className="card mr-5 col-10">
+              <h4 className="d-flex justify-content-between align-items-center mb-1">
+                <span className="text-dark">Màu sắc</span> <br/>
+              </h4>
+              <span className="text-dark">Danh sách</span>{" "}
+              <input
+                className="form-control mb-2"
+                onChange={(e) => changeColorHandler(e.target.value)}
+                value={colors}
+              >
+              </input>
+              <br/>
             </div>
             {count >= 1 && (
               <div className="card mr-3">
@@ -808,7 +829,7 @@ const EditProduct = () => {
           <button
             className="btn btn-primary btn-lg mt-5 mb-5"
             type="submit"
-            style={{ marginLeft: 70, borderRadius: 50 }}
+            style={{marginLeft: 70, borderRadius: 50}}
           >
             Cập nhật
           </button>

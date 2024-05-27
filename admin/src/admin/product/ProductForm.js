@@ -15,6 +15,7 @@ const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 const ProductForm = () => {
   const [count, setCount] = useState(1);
   const [brand, setBrand] = useState([]);
+  const [colors, setColors] = useState("black white gray");
   const [sale, setSale] = useState([]);
   const [category, setCategory] = useState([]);
   const [image, setImage] = useState([]);
@@ -157,6 +158,10 @@ const ProductForm = () => {
 
   const changeCountHandler = (value) => {
     setCount(value);
+  };
+
+  const changeColorHandler = (value) => {
+    setColors(value);
   };
 
   return (
@@ -310,11 +315,11 @@ const ProductForm = () => {
           <div className="col-10 row">
             <div className="card mr-5 col-10">
               <h4 className="d-flex justify-content-between align-items-center mb-1">
-                <span className="text-dark">Chi tiết sản phẩm</span> <br />
+                <span className="text-dark">Chi tiết sản phẩm</span> <br/>
               </h4>
-              <span className="text-dark">Số lượng</span> <br />
+              <span className="text-dark">Số lượng</span> <br/>
               <select
-                class="form-control mb-2"
+                className="form-control mb-2"
                 onChange={(e) => changeCountHandler(e.target.value)}
               >
                 {numbers.map((item, index) => (
@@ -323,6 +328,20 @@ const ProductForm = () => {
                   </option>
                 ))}
               </select>
+            </div>
+
+            <div className="card mr-5 col-10">
+              <h4 className="d-flex justify-content-between align-items-center mb-1">
+                <span className="text-dark">Màu sắc</span> <br/>
+              </h4>
+              <span className="text-dark">Danh sách</span> <br/>
+              <input
+                className="form-control mb-2"
+                onChange={(e) => changeColorHandler(e.target.value)}
+                value={colors}
+              >
+
+              </input>
             </div>
             {count >= 1 && (
               <div className="card mr-3">
@@ -828,7 +847,7 @@ const ProductForm = () => {
           <button
             className="btn btn-primary btn-lg mt-5 mb-5"
             type="submit"
-            style={{ marginLeft: 70, borderRadius: 50 }}
+            style={{marginLeft: 70, borderRadius: 50}}
           >
             Thêm mới
           </button>

@@ -195,6 +195,7 @@ public class ProductServiceImpl implements ProductService {
         product.setName(reqUpdateProductDto.getName());
         product.setCode(reqUpdateProductDto.getCode());
         product.setDescription(reqUpdateProductDto.getDescription());
+        product.setColors(reqUpdateProductDto.getColors());
         /*Find brand and set for product*/
         Brand brand = brandService.getBrandById(reqUpdateProductDto.getBrandId());
         /*Find sale and set for product*/
