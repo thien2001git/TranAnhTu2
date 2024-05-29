@@ -268,7 +268,13 @@ public class OrderServiceImpl implements OrderService {
         List<Order> orderList = orderRepo.findAll();
         for (Order order : orderList) {
             if (order.getOrderStatus().getId() == 4) {
-                String key = simpleDateFormat.format(order.getCreateDate());
+                String key = "29/05/2024";
+                try {
+                    key = order.getCreateDate().toString();
+                } catch (IllegalArgumentException ex) {
+                    System.out.println(order.getCreateDate());
+                }
+
                 Double value = ret.computeIfAbsent(key, x -> 0.0);
                 ret.put(key, value + order.getTotal());
             }
