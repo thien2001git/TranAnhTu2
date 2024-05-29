@@ -268,7 +268,7 @@ public class OrderServiceImpl implements OrderService {
         List<Order> orderList = orderRepo.findAll();
         for (Order order : orderList) {
             if (order.getOrderStatus().getId() == 4) {
-                String key = simpleDateFormat.format(order.getShipDate());
+                String key = simpleDateFormat.format(order.getCreateDate());
                 Double value = ret.computeIfAbsent(key, x -> 0.0);
                 ret.put(key, value + order.getTotal());
             }

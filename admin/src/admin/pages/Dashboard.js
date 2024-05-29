@@ -63,6 +63,14 @@ const Dashboard = () => {
       .catch((error) => console.log(error));
 
     calcByDate().then((res) => {
+      function compare(a,b) {
+        if (a.key < b.key)
+          return -1;
+        if (a.key > b.key)
+          return 1;
+        return 0;
+      }
+
       let l = []
       let keys = Object.keys(res.data)
       let total = 0
@@ -75,6 +83,7 @@ const Dashboard = () => {
         )
         total += res.data[value]
       })
+      l.sort(compare)
       l.push(
         {
           key: "Tổng",
