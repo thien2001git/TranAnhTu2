@@ -17,6 +17,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 public interface OrderService {
     Order createOrder(ReqOrderDto reqOrderDto) ;
@@ -45,4 +46,6 @@ public interface OrderService {
     Order successOrder(ReqUpdateStatusOrder reqUpdateStatusOrder);
     Order cancelOrder(ReqUpdateStatusOrder reqUpdateStatusOrder);
     Order cancelOrder(ReqCancelOrder reqCancelOrder);
+
+    Map<String, Double> calcByDay();
 }

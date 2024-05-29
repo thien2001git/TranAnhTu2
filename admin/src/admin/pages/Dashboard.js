@@ -1,16 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect} from "react";
 import statusCards from "../../assets/JsonData/status-card-data.json";
 import StatusCard from "../status-card/StatusCard";
 import Chart from "react-apexcharts";
-import { Link, NavLink } from "react-router-dom";
+import {Link, NavLink} from "react-router-dom";
 import {
   reportByProduct,
   reportAmountYear,
   countOrder,
   countOrderByName,
+  calcByDate,
 } from "../../api/OrderApi";
-import { countAccount } from "../../api/AccountApi";
-import { countProduct } from "../../api/ProductApi";
+import {countAccount} from "../../api/AccountApi";
+import {countProduct} from "../../api/ProductApi";
 
 const Dashboard = () => {
   const [product, setProduct] = useState([]);
@@ -21,6 +22,7 @@ const Dashboard = () => {
   const [countPro, setCountPro] = useState();
   const [seri, setSeri] = useState([]);
   const [option, setOption] = useState({});
+  const [reportByDate, setReportByDate] = useState([]);
 
   useEffect(() => {
     reportByProduct(1, 8)
@@ -59,6 +61,28 @@ const Dashboard = () => {
         setSeri(y);
       })
       .catch((error) => console.log(error));
+
+    calcByDate().then((res) => {
+      let l = []
+      let keys = Object.keys(res.data)
+      let total = 0
+      keys.forEach((value, index) => {
+        l.push(
+          {
+            key: value,
+            value: res.data[value]
+          }
+        )
+        total += res.data[value]
+      })
+      l.push(
+        {
+          key: "Tổng",
+          value: total
+        }
+      )
+      setReportByDate(l)
+    })
   }, []);
 
   return (
@@ -93,7 +117,7 @@ const Dashboard = () => {
         </div>
         <div className="col-6">
           <div className="card full-height">
-            <Chart options={option} series={seri} type="donut" height="100%" />
+            <Chart options={option} series={seri} type="donut" height="100%"/>
           </div>
         </div>
         <div className="col-6">
@@ -104,28 +128,28 @@ const Dashboard = () => {
             <div className="card__body">
               <table className="table table-bordered">
                 <thead>
-                  <tr>
-                    <th scope="col">Mã sản phẩm</th>
-                    <th scope="col">Tên sản phẩm</th>
-                    <th scope="col">Số lượng bán</th>
-                    <th scope="col">Doanh thu</th>
-                  </tr>
+                <tr>
+                  <th scope="col">Mã sản phẩm</th>
+                  <th scope="col">Tên sản phẩm</th>
+                  <th scope="col">Số lượng bán</th>
+                  <th scope="col">Doanh thu</th>
+                </tr>
                 </thead>
                 <tbody>
-                  {product &&
-                    product.map((item, index) => (
-                      <tr key={index}>
-                        <th scope="row">
-                          <NavLink to={`/order-product/${item.id}`} exact>
-                            {" "}
-                            {item.id}
-                          </NavLink>
-                        </th>
-                        <td>{item.name}</td>
-                        <td>{item.count}</td>
-                        <td>{item.amount.toLocaleString()} đ</td>
-                      </tr>
-                    ))}
+                {product &&
+                  product.map((item, index) => (
+                    <tr key={index}>
+                      <th scope="row">
+                        <NavLink to={`/order-product/${item.id}`} exact>
+                          {" "}
+                          {item.id}
+                        </NavLink>
+                      </th>
+                      <td>{item.name}</td>
+                      <td>{item.count}</td>
+                      <td>{item.amount.toLocaleString()} đ</td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>
@@ -142,27 +166,27 @@ const Dashboard = () => {
             <div className="card__body">
               <table className="table table-bordered">
                 <thead>
-                  <tr>
-                    <th scope="col">STT</th>
-                    <th scope="col">Năm</th>
-                    <th scope="col">Số lượng đơn</th>
-                    <th scope="col">Doanh thu</th>
-                  </tr>
+                <tr>
+                  <th scope="col">STT</th>
+                  <th scope="col">Năm</th>
+                  <th scope="col">Số lượng đơn</th>
+                  <th scope="col">Doanh thu</th>
+                </tr>
                 </thead>
                 <tbody>
-                  {year &&
-                    year.map((item, index) => (
-                      <tr key={index}>
-                        <th scope="row">
-                          <NavLink exact to={`/report-month/${item.year}`}>
-                            {index + 1}
-                          </NavLink>
-                        </th>
-                        <td>{item.year}</td>
-                        <td>{item.count}</td>
-                        <td>{item.total && item.total.toLocaleString()} đ</td>
-                      </tr>
-                    ))}
+                {year &&
+                  year.map((item, index) => (
+                    <tr key={index}>
+                      <th scope="row">
+                        <NavLink exact to={`/report-month/${item.year}`}>
+                          {index + 1}
+                        </NavLink>
+                      </th>
+                      <td>{item.year}</td>
+                      <td>{item.count}</td>
+                      <td>{item.total && item.total.toLocaleString()} đ</td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>
@@ -170,6 +194,40 @@ const Dashboard = () => {
               <NavLink exact to={`/report-month/2022`}>
                 Xem chi tiết
               </NavLink>
+            </div>
+          </div>
+        </div>
+
+        <div className="col-6">
+          <div className="card">
+            <div className="card__header">
+              <h3 className="text-primary">Doanh thu theo Ngày</h3>
+            </div>
+            <div className="card__body">
+              <table className="table table-bordered">
+                <thead>
+                <tr>
+                  <th scope="col">STT</th>
+                  <th scope="col">Ngày</th>
+                  <th scope="col">Doanh thu</th>
+                </tr>
+                </thead>
+                <tbody>
+                {reportByDate &&
+                  reportByDate.map((item, index) => (
+                    <tr key={index}>
+                      <th scope="row">
+                        {index + 1}
+                      </th>
+                      <td>{item.key}</td>
+                      <td>{item.value && item.value.toLocaleString()} đ</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <div className="card__footer">
+
             </div>
           </div>
         </div>

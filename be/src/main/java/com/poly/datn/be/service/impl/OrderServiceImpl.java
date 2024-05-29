@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.MessagingException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -244,7 +245,7 @@ public class OrderServiceImpl implements OrderService {
             attributeService.save(attribute);
         }
         Voucher voucher = order.getVoucher();
-        if(voucher != null){
+        if (voucher != null) {
             voucher.setCount(new Integer(1));
             voucher.setIsActive(Boolean.TRUE);
             voucherService.saveVoucher(voucher);
@@ -258,6 +259,21 @@ public class OrderServiceImpl implements OrderService {
         notificationService.createNotification(notification);
 
         return order;
+    }
+
+    @Override
+    public Map<String, Double> calcByDay() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Map<String, Double> ret = new HashMap<>();
+        List<Order> orderList = orderRepo.findAll();
+        for (Order order : orderList) {
+            if (order.getOrderStatus().getId() == 4) {
+                String key = simpleDateFormat.format(order.getShipDate());
+                Double value = ret.computeIfAbsent(key, x -> 0.0);
+                ret.put(key, value + order.getTotal());
+            }
+        }
+        return ret;
     }
 
     @Override
@@ -382,31 +398,31 @@ public class OrderServiceImpl implements OrderService {
                 attributeService.save(attribute);
             }
             Voucher v = order.getVoucher();
-            if(v != null){
+            if (v != null) {
                 v.setIsActive(Boolean.FALSE);
                 voucherService.saveVoucher(v);
             }
-           if(order.getTotal() > 1000000){
-               Voucher voucher = new Voucher();
-               voucher.setCode(generateCode());
-               voucher.setIsActive(Boolean.TRUE);
-               voucher.setCreateDate(LocalDate.now());
-               voucher.setCount(new Integer(1));
-               voucher.setExpireDate(LocalDate.now().plusYears(1));
-               if (order.getTotal() >= 3000000) {
-                   voucher.setDiscount(new Integer(30));
-               } else if (order.getTotal() >= 2000000) {
-                   voucher.setDiscount(new Integer(20));
-               } else {
-                   voucher.setDiscount(new Integer(10));
-               }
-               voucher = voucherService.saveVoucher(voucher);
-               try {
-                   MailUtil.sendEmail(voucher, order);
-               } catch (MessagingException e) {
-                   System.out.println("Can't send an email.");
-               }
-           }
+            if (order.getTotal() > 1000000) {
+                Voucher voucher = new Voucher();
+                voucher.setCode(generateCode());
+                voucher.setIsActive(Boolean.TRUE);
+                voucher.setCreateDate(LocalDate.now());
+                voucher.setCount(new Integer(1));
+                voucher.setExpireDate(LocalDate.now().plusYears(1));
+                if (order.getTotal() >= 3000000) {
+                    voucher.setDiscount(new Integer(30));
+                } else if (order.getTotal() >= 2000000) {
+                    voucher.setDiscount(new Integer(20));
+                } else {
+                    voucher.setDiscount(new Integer(10));
+                }
+                voucher = voucherService.saveVoucher(voucher);
+                try {
+                    MailUtil.sendEmail(voucher, order);
+                } catch (MessagingException e) {
+                    System.out.println("Can't send an email.");
+                }
+            }
             return orderRepo.save(order);
         } else if (flag.equals(OrderStatusConst.ORDER_STATUS_SUCCESS)) {
             throw new AppException(OrderStatusConst.ORDER_STATUS_SUCCESS_MESSAGE);
@@ -437,7 +453,7 @@ public class OrderServiceImpl implements OrderService {
                 attributeService.save(attribute);
             }
             Voucher voucher = order.getVoucher();
-            if(voucher != null){
+            if (voucher != null) {
                 voucher.setCount(new Integer(1));
                 voucher.setIsActive(Boolean.TRUE);
                 voucherService.saveVoucher(voucher);

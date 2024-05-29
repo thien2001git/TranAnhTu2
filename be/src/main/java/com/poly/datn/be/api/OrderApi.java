@@ -150,4 +150,9 @@ public class OrderApi {
     public ResponseEntity<?> cancelOrder(@RequestBody ReqUpdateStatusOrder reqUpdateStatusOrder){
         return new ResponseEntity<>(orderService.cancelOrder(reqUpdateStatusOrder), HttpStatus.OK);
     }
+
+    @GetMapping(OrderConst.API_CALC_BY_DATE)
+    public ResponseEntity<?> calcByDate() {
+        return new ResponseEntity<>(orderService.calcByDay(), HttpStatus.OK);
+    }
 }

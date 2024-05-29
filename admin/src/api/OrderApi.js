@@ -96,3 +96,8 @@ export const updateCancel = (data) =>{
     const url = `/api/site/order/cancel-order`;
     return Instance.post(url, data);
 }
+
+export const calcByDate = (data) =>{
+  const url = `/api/site/order/calc-by-date`;
+  return Instance.get(url, data);
+}
