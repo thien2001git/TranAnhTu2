@@ -64,6 +64,16 @@ const ReportMonth = (props) => {
       })
       .catch((error) => console.log(error));
   };
+
+  let list = []
+  for (let i = 2018; i < 2024; i++) {
+    list.push(i)
+  }
+
+  const options = list.map((item, index) => {
+    return <option key={index} value={item}>{item}</option>
+  })
+
   return (
     <div className="col-12">
       <div className="card">
@@ -83,10 +93,7 @@ const ReportMonth = (props) => {
             onChange={(e) => changeYearHandler(e.target.value)}
             defaultValue={id}
           >
-            <option value="2018">2018</option>
-            <option value="2019">2019</option>
-            <option value="2021">2021</option>
-            <option value="2022">2022</option>
+            {options}
           </select>
         </div>
         <div className="card__body">
