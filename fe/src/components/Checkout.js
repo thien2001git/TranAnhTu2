@@ -8705,8 +8705,6 @@ const Checkout = (props) => {
             setLoading(false);
           }, 10000);
 
-
-
           const order = {
             fullname: data.name,
             phone: data.phone,
@@ -8716,7 +8714,7 @@ const Checkout = (props) => {
             note: data.note,
             isPending: false,
             payment: data.payment,
-            accountId:  localStorage.getItem("userid"),
+            accountId: localStorage.getItem("userid"),
             code: voucher,
             orderDetails: cart.map((item) => ({
               quantity: item.quantity,
@@ -8727,6 +8725,7 @@ const Checkout = (props) => {
               },
             })),
           };
+
           console.log(order);
 
           createOrder(order)
@@ -8753,7 +8752,7 @@ const Checkout = (props) => {
         fullname: data.name,
         phone: data.phone,
         address: `${data.address}, ${localStorage.getItem("provine")}`,
-        email: "a@a.com",
+        email: data.email,
         total: amount,
         note: data.note,
         isPending: false,
@@ -8877,7 +8876,7 @@ const Checkout = (props) => {
                 </label>
                 <select
                   className="form-control"
-                  {...register("province", { required: true })}
+                  {...register("province", {required: true})}
                   required
                   onChange={(e) => onLoadDistrictHandler(e.target.value)}
                 >
@@ -8896,7 +8895,7 @@ const Checkout = (props) => {
                 </label>
                 <select
                   className="form-control"
-                  {...register("district", { required: true })}
+                  {...register("district", {required: true})}
                   required
                   onChange={(e) => onLoadWardHandler(e.target.value)}
                 >
@@ -8915,7 +8914,7 @@ const Checkout = (props) => {
                 </label>
                 <select
                   className="form-control"
-                  {...register("ward", { required: true })}
+                  {...register("ward", {required: true})}
                   required
                   onChange={(e) => onSelectWardHandler(e.target.value)}
                 >
@@ -8987,6 +8986,25 @@ const Checkout = (props) => {
                   </div>
                 )}
               </div>
+              <div className="col-sm-6 mt-2">
+                <label htmlFor="lastName" className="form-label">
+                  <strong> Email</strong>
+                </label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="lastName"
+                  {...register("email", {
+                    required: true,
+                    pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                  })}
+                />
+                {errors.email && (
+                  <div className="alert alert-danger" role="alert">
+                    Email không hợp lệ!
+                  </div>
+                )}
+              </div>
               <div className="col-12 mt-2">
                 <label htmlFor="address" className="form-label">
                   <strong>Ghi chú</strong>
@@ -8996,7 +9014,7 @@ const Checkout = (props) => {
                   id="exampleFormControlTextarea1"
                   rows={3}
                   defaultValue={""}
-                  {...register("note", { required: false })}
+                  {...register("note", {required: false})}
                 />
               </div>
             </div>
@@ -9008,12 +9026,12 @@ const Checkout = (props) => {
                 className="form-check-input"
                 type="radio"
                 value="Thanh toán khi giao hàng(COD)"
-                {...register("payment", { required: true })}
+                {...register("payment", {required: true})}
                 defaultChecked={true}
                 onChange={(e) => textHandler(e.target.value)}
               />
               <label className="form-check-label">
-                Thanh toán khi giao hàng(COD) <br />
+                Thanh toán khi giao hàng(COD) <br/>
               </label>
               {text === "Thanh toán khi giao hàng(COD)" && (
                 <div className="alert alert-dark">
