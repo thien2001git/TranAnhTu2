@@ -66,7 +66,7 @@ const ReportMonth = (props) => {
   };
 
   let list = []
-  for (let i = 2018; i < 2024; i++) {
+  for (let i = 2018; i <= 2024; i++) {
     list.push(i)
   }
 
